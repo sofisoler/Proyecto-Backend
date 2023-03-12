@@ -1,0 +1,21 @@
+{
+  "type": "module",
+  "name": "proyecto-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "productManager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sofisoler/Proyecto-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sofisoler/Proyecto-Backend/issues"
+  },
+  "homepage": "https://github.com/sofisoler/Proyecto-Backend#readme"
+}
