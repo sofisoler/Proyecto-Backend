@@ -1,6 +1,6 @@
 import {promises as fs} from "fs"
 
-class ProductManager {
+export default class ProductManager {
     constructor() {
         this.patch = "./products.txt"
         this.products = []
@@ -61,10 +61,14 @@ class ProductManager {
     }
 }
 
-const products = new ProductManager
+// const products = new ProductManager
 
 // products.addProduct("Base", "Base de maquillaje para una alta cobertura y acabado matte.",
 // "https://www.maybelline.com.ar/~/media/mny/global/face-makeup/foundation/super-stay-full-coverage-foundation/maybelline-foundation-super-stay-full-coverage-classic-ivory-041554541427-c.jpg?thn=0&w=380&hash=3E33CBC29C47F694836B6871906FB5F0386ED474", 6000, "0001", 100)
+// products.addProduct("Product1", "Description1", "Image1", 2000, "0002", 50)
+// products.addProduct("Product2", "Description2", "Image2", 8000, "0003", 50)
+// products.addProduct("Product3", "Description3", "Image3", 3000, "0004", 50)
+// products.addProduct("Product4", "Description4", "Image4", 5000, "0005", 50)
 
 // products.getProducts()
 

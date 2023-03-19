@@ -2,10 +2,10 @@
   "type": "module",
   "name": "proyecto-backend",
   "version": "1.0.0",
-  "description": "",
   "main": "productManager.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/sofisoler/Proyecto-Backend/issues"
   },
-  "homepage": "https://github.com/sofisoler/Proyecto-Backend#readme"
+  "homepage": "https://github.com/sofisoler/Proyecto-Backend#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
 }
