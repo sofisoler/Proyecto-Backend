@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "proyecto-backend",
   "version": "1.0.0",
   "main": "productManager.js",
