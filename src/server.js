@@ -4,11 +4,15 @@ const productRouter = require('./routes/product.router')
 const cartRouter = require('./routes/cart.router')
 const viewsRouter = require('./routes/views.router')
 const { Server } = require('socket.io')
+const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
 
 const app = express();
 const PORT = 8080;
 
 const handlebars = require('express-handlebars')
+
+const products = new ProductManager();
+const readProducts = products.readProducts();
 
 app.engine('handlebars', handlebars.engine())
 app.set('view engine','handlebars' )
@@ -23,6 +27,14 @@ app.use(cookieParser())
 app.use('/views', viewsRouter)
 app.use('/api/products', productRouter)
 app.use('/api/cart', cartRouter)
+
+app.get('/home', async (req, res) => {
+    let allProducts = await readProducts
+    res.render('home', {
+        title: 'Backend | Home',
+        products: allProducts
+    })
+})
 
 const server = app.listen(PORT, () => {
     console.log(`Express server listening on ${server.address().port}`)

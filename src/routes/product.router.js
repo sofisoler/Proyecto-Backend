@@ -6,7 +6,7 @@ const productRouter = Router();
 const products = new ProductManager();
 const readProducts = products.readProducts();
 
-productRouter.get("/products", async (req, res) => {
+productRouter.get("/", async (req, res) => {
     let limit = parseInt(req.query.limit);
     if(!limit) return res.send(await readProducts)
     let allProducts = await readProducts;
@@ -14,7 +14,7 @@ productRouter.get("/products", async (req, res) => {
     res.send(productLimit);
 });
 
-productRouter.get("/products/:id", async (req, res) => {
+productRouter.get("/:id", async (req, res) => {
     let id = parseInt(req.params.id);
     let allProducts = await readProducts;
     let productById = allProducts.find(product => product.id === id);
