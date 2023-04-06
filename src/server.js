@@ -36,6 +36,14 @@ app.get('/home', async (req, res) => {
     })
 })
 
+app.get('/realTimeProducts', async (req, res) => {
+    let allProducts = await readProducts
+    res.render('realTimeProducts', {
+        title: 'Backend | Real Time Products',
+        products: allProducts
+    })
+})
+
 const server = app.listen(PORT, () => {
     console.log(`Express server listening on ${server.address().port}`)
 });
@@ -53,5 +61,18 @@ io.on('connection', socket => {
     })
     socket.on('authenticated', nombreUsuario => {
         socket.broadcast.emit('newUserConnected', nombreUsuario)
+    })
+})
+
+io.on('connection', (socket) => {
+    const emitProducts = async () => {
+        const products = await readProducts
+        io.emit('loadProducts', products)
+    }
+    emitProducts();
+
+    socket.on ('newproduct', async (data) => {
+        const newProduct = products.addProduct(data);
+        console.log(newProduct)
     })
 })
