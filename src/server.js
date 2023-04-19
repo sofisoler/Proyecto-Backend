@@ -1,10 +1,11 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const productRouter = require('./routes/product.router')
-const cartRouter = require('./routes/cart.router')
-const viewsRouter = require('./routes/views.router')
+const routerApp = require('./routes')
 const { Server } = require('socket.io')
 const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
+const { objConfig } = require('./config/config')
+
+objConfig.connectDB()
 
 const app = express();
 const PORT = 8080;
@@ -21,12 +22,10 @@ app.set('views', __dirname+'/views')
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
 
-app.use(express.static(__dirname + '/public'))
+app.use('/static',express.static(__dirname + '/public'))
 app.use(cookieParser())
 
-app.use('/views', viewsRouter)
-app.use('/api/products', productRouter)
-app.use('/api/cart', cartRouter)
+app.use(routerApp)
 
 app.get('/home', async (req, res) => {
     let allProducts = await readProducts
