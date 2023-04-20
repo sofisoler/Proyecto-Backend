@@ -29,4 +29,8 @@ const ProductSchema = new Schema({
     }
 })
 
-module.exports = model(collection, ProductSchema)
+const productsModel = model(collection , ProductSchema)
+
+module.exports = {
+    productsModel
+}
