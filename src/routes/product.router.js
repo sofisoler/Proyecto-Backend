@@ -7,11 +7,23 @@ const productsManager = new ProductManagerMongo();
 
 productRouter.get("/", async (req, res) => {
     try {
-        const products = await productsManager.getProducts();
-        if (!products) {
+        const { page=1, limit=3 } = req.query
+        const { docs, 
+            hasPrevPage,
+            prevPage,
+            hasNextPage,
+            nextPage, 
+        } = await productsManager.getProducts({page, limit});
+        if (!docs) {
             return res.status(400).send('Not Found');
         }
-        res.status(200).send(products);
+        res.status(200).render('product', {
+            products: docs, 
+            hasPrevPage,
+            prevPage,
+            hasNextPage,
+            nextPage, 
+        });
     } catch (error) {
         console.log(error);
     }
@@ -45,7 +57,7 @@ productRouter.put('/:pid', async (req, res) =>{
     if (!productToReplace.title || !productToReplace.thumbnail || !productToReplace.price || !productToReplace.code || !productToReplace.stock) {
         return res.status(400).send({message: 'Corroborar que esten todos los datos'})
     }
-    let result = await productsManager.updateUser(pid, productToReplace)
+    let result = await productsManager.updateProduct(pid, productToReplace)
     res.status(201).send({ 
         products: result,
         message: 'Modified product'
@@ -59,7 +71,3 @@ productRouter.delete('/:pid', async (req, res)=> {
 })
 
 module.exports = productRouter
-
-// productsManager.addProduct({title: "Product1", description: "Description1", thumbnail: "Image1", price: "2000", code: "0001", stock: "50"})
-// productsManager.addProduct({title: "Product2", description: "Description2", thumbnail: "Image2", price: "8000", code: "0002", stock: "50"})
-// productsManager.addProduct({title: "Product3", description: "Description3", thumbnail: "Image3", price: "6000", code: "0003", stock: "50"})

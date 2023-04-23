@@ -5,6 +5,11 @@ const cartRouter = Router();
 
 const cartsManager = new CartManagerMongo();
 
+cartRouter.get("/", async (req, res) => {
+    let carts = await cartsManager.getCarts();
+    res.send(carts);
+});
+
 cartRouter.get("/:cid", async (req, res) => {
     const { cid } = req.params
     let cartById = await cartsManager.getCartById(cid);
