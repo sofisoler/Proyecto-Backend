@@ -11,13 +11,23 @@ class CartManagerMongo {
     }
     
     createCart = async () => {
-        await cartsModel.create({products: []})
+        return await cartsModel.create({products: []})
     }
 
     addProductInCart = async (cid, pid) => {
         let cart = await cartsModel.findById({_id: cid})
         cart.products.push({product: pid})
         return await cartsModel.findByIdAndUpdate({_id: cid}, cart)
+    }
+
+    deleteProduct = async (cid, pid) => {
+        let cart = await cartsModel.findById({_id: cid})
+        cart.products.pull({product: pid})
+        return await cart.save();
+    }
+
+    deleteProducts = async (cid) => {
+        return await cartsModel.updateOne({_id: cid}, {products: []})
     }
 }
 

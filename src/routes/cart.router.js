@@ -16,15 +16,27 @@ cartRouter.get("/:cid", async (req, res) => {
     res.send(cartById);
 });
 
-cartRouter.post("/", async (req, res) => {
-        let resp = await cartsManager.createCart({products: []})
-        res.send({resp})
+cartRouter.post("/create", async (req, res) => {
+        let newCart = await cartsManager.createCart();
+        res.send(newCart);
 });
 
-cartRouter.post("/:cid/products/:pid", async (req,res) => {
+cartRouter.post("/:cid/addProduct/:pid", async (req,res) => {
     const { cid, pid } = req.params
-    let resp = await cartsManager.addProductInCart(cid, pid)
-    res.send({resp})
+    let addProduct = await cartsManager.addProductInCart(cid, pid)
+    res.send(addProduct);
+});
+
+cartRouter.delete('/:cid/deleteProduct/:pid', async (req, res) => {
+    const { cid, pid } = req.params
+    let deleteProduct = await cartsManager.deleteProduct(cid, pid);
+    res.send(deleteProduct);
+});
+
+cartRouter.delete('/:cid/deleteProducts', async (req, res) => {
+    const { cid } = req.params
+    let deleteProducts = await cartsManager.deleteProducts(cid);
+    res.send(deleteProducts);
 });
 
 module.exports = cartRouter
