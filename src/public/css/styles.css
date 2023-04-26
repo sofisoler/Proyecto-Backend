@@ -1,0 +1,20 @@
+body {
+    background-color: #d8b5ff;
+}
+
+h1 {
+    text-align: center;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.card {
+    width: 18rem;
+    margin-right: 1rem;
+}

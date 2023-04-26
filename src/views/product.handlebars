@@ -1,14 +1,24 @@
 <div>
-    {{#each products}}
-        <li><strong>Título: </strong>{{this.title}} - <strong>Descripción: </strong>{{this.description}} - <strong>Precio: </strong>{{this.price}}</li>
-    {{/each}}
+    <div class="card-container">
+        {{#each products}}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Título: {{this.title}}</h5>
+                    <p class="card-text">Descripción: {{this.description}}</p>
+                    <p class="card-price">Precio: {{this.price}}</p>
+                    <form class="add-to-cart-form">
+                        <button class="btn btn-outline-secondary" type="submit" _id="{{_id}}">Agregar al carrito</button>
+                    </form>
+                </div>
+            </div>
+        {{/each}}
+    </div>
     <center>
         {{#if hasPrevPage}}
-            <a href="/api/products?page={{prevPage}}"><button>Anterior</button></a>
+            <a href="/api/products?page={{prevPage}}"><button class="btn btn-outline-secondary m-3">Anterior</button></a>
         {{/if}}
         {{#if hasNextPage}}
-            <a href="/api/products?page={{nextPage}}"><button>Siguiente</button></a>
+            <a href="/api/products?page={{nextPage}}"><button class="btn btn-outline-secondary m-3">Siguiente</button></a>
         {{/if}}
-        <br>
     </center>
 </div>
