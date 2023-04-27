@@ -7,7 +7,7 @@ const productsManager = new ProductManagerMongo();
 
 productRouter.get("/", async (req, res) => {
     const mensaje = req.query.mensaje || '';
-    const user = req.session.user;
+    const login = req.session.user;
     try {
         const { page=1, limit=3 } = req.query
         const { docs, 
@@ -21,7 +21,7 @@ productRouter.get("/", async (req, res) => {
         }
         res.status(200).render('product', {
             mensaje: mensaje,
-            user: user,
+            user: login,
             products: docs,
             hasPrevPage,
             prevPage,

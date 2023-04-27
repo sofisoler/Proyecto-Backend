@@ -1,12 +1,4 @@
 <div>
-    {{#if mensaje}}
-        <div class="alert alert-success">{{mensaje}}</div>
-    {{/if}}
-    {{#if user}}
-        <a href="/session/logout" class="btn btn-outline-danger">Cerrar sesión</a>
-    {{else}}
-        <a href="/session" class="btn btn-outline-secondary">Iniciar sesión</a>
-    {{/if}}
     <div class="card-container">
         {{#each products}}
             <div class="card">

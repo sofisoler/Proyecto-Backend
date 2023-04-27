@@ -7,6 +7,7 @@ const userRouter = Router()
 const usersManager = new UserManagerMongo()
 
 userRouter.get('/', authSession,async (req, res) =>{
+    const login = req.session.user;
     try {
         const { page=1, limit=3 } = req.query
         const { docs, 
@@ -19,6 +20,7 @@ userRouter.get('/', authSession,async (req, res) =>{
             return res.status(400).send('No hay usuarios')            
         }
         res.status(200).render('user',{
+            user: login,
             users: docs,
             hasPrevPage,
             prevPage,

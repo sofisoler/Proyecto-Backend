@@ -9,8 +9,9 @@ const objConfig = {
             console.log('Database connected')
         } catch (error) {
             console.log(error)
-        }
-    }
+        } 
+    }, 
+    url: 'mongodb+srv://sofisoler01:sofia123@proyectobackend.clbjxic.mongodb.net/ecommerce?retryWrites=true&w=majority' 
 }
 
 module.exports = {

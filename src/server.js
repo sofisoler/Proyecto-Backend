@@ -5,6 +5,10 @@ const routerApp = require('./routes')
 const { Server } = require('socket.io')
 const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
 const { objConfig } = require('./config/config')
+const FileStore = require('session-file-store')
+const { create } = require('connect-mongo')
+
+const fileStorege = FileStore(session)
 
 objConfig.connectDB()
 
@@ -25,6 +29,14 @@ app.use(express.urlencoded({extended : true}));
 
 app.use(cookieParser('secret-Project'))
 app.use(session({
+    store: create({
+        mongoUrl: objConfig.url,
+        mongoOptions: {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        },
+        ttl: 3600000
+    }),
     secret: 'secretProject',
     resave: true,
     saveUninitialized: true

@@ -17,7 +17,11 @@ const UserSchema = new Schema ({
         unique: true,
         required: true
     },
-    gender: String
+    username: {
+        type: String,
+        unique: true,
+        required: true
+    }
 })
 
 UserSchema.plugin(mongoosePaginate)
