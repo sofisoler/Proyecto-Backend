@@ -6,6 +6,8 @@ const productRouter = Router();
 const productsManager = new ProductManagerMongo();
 
 productRouter.get("/", async (req, res) => {
+    const mensaje = req.query.mensaje || '';
+    const user = req.session.user;
     try {
         const { page=1, limit=3 } = req.query
         const { docs, 
@@ -18,7 +20,9 @@ productRouter.get("/", async (req, res) => {
             return res.status(400).send('Not Found');
         }
         res.status(200).render('product', {
-            products: docs, 
+            mensaje: mensaje,
+            user: user,
+            products: docs,
             hasPrevPage,
             prevPage,
             hasNextPage,

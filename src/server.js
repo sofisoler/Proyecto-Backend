@@ -1,5 +1,6 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
+const session = require('express-session')
 const routerApp = require('./routes')
 const { Server } = require('socket.io')
 const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
@@ -21,6 +22,13 @@ app.set('views', __dirname+'/views')
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
+
+app.use(cookieParser('secret-Project'))
+app.use(session({
+    secret: 'secretProject',
+    resave: true,
+    saveUninitialized: true
+}))
 
 app.use('/static',express.static(__dirname + '/public'))
 app.use(cookieParser())

@@ -1,0 +1,22 @@
+<div>
+    <ul class="list-group">
+    {{#each users}}
+        <li class="list-group-item">
+            <div>
+                <h5 class="mb-1">Nombre: {{this.first_name}}</h5>
+                <p class="mb-1">Apellido: {{this.last_name}}</p>
+                <p class="mb-1">Email: {{this.email}}</p>
+                <p class="mb-1">Género: {{this.gender}}</p>
+            </div>
+        </li>
+    {{/each}}
+    </ul>
+    <center>
+        {{#if hasPrevPage}}
+            <a href="/api/users?page={{prevPage}}"><button class="btn btn-outline-secondary m-3">Anterior</button></a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="/api/users?page={{nextPage}}"><button class="btn btn-outline-secondary m-3">Siguiente</button></a>
+        {{/if}}
+    </center>
+</div>
