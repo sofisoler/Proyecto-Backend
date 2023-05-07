@@ -7,6 +7,9 @@ const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
 const { objConfig } = require('./config/config')
 const FileStore = require('session-file-store')
 const { create } = require('connect-mongo')
+const handlebars = require('express-handlebars')
+const passport = require('passport')
+const { initializePassport } = require('./config/passport.config')
 
 const fileStorege = FileStore(session)
 
@@ -14,8 +17,6 @@ objConfig.connectDB()
 
 const app = express();
 const PORT = 8080;
-
-const handlebars = require('express-handlebars')
 
 const products = new ProductManager();
 const readProducts = products.readProducts();
@@ -41,6 +42,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }))
+
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/static',express.static(__dirname + '/public'))
 app.use(cookieParser())

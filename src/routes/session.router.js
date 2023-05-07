@@ -1,24 +1,33 @@
 const { Router } =require('express')
+const passport = require('passport')
 const { userModel } = require('../models/users.model')
+const { createHash } = require('../utils/bcryptPass')
+const { generateToken, authToken } = require('../utils/jsonwebtoken')
 
 const sessionRouter = Router()
+
+const users = []
 
 sessionRouter.get('/', (req,res)=>{
     res.render('login', {})
 })
 
 sessionRouter.post('/login', async (req, res)=> {
-    const {username, password} = req.body
-    const user = await userModel.findOne({username})
-    if (!user) {
-        return res.send({status: 'error', message: 'Password o username incorrecto'})
-    }
-    req.session.user = {
-        username: user.username,
-        email: user.email,
-        admin: true
-    }
-    res.redirect(`/api/products?mensaje=¡Bienvenid@ ${username}!`);
+    const { email, password } = req.body
+    const user = users.find((user) => user.email === email && user.password === password)
+    if (!user) return res.status(400).send({ status: 'error', message: 'Revisar usuario y contraseña' })
+    const accessToken = generateToken(user)
+    res.send({
+        status: 'success',
+        payload: accessToken
+    })
+})
+
+sessionRouter.get('/current', authToken, (req, res) => {
+    res.send({
+        status: 'success',
+        payload: req.user
+    })
 })
 
 sessionRouter.get('/register', (req, res)=>{
@@ -26,23 +35,46 @@ sessionRouter.get('/register', (req, res)=>{
 })
 
 sessionRouter.post('/register', async (req,res)=> {
-    try {
-        const {username, first_name, last_name, email, password} = req.body
-        const exists = await userModel.findOne({email})
-        if(exists) return res.send({status: 'error', message: 'Usuario existente'})
-        const newUser = {
-            username,
-            first_name,
-            last_name,
-            email,
-            password
-        }
-        await userModel.create(newUser)
-        res.status(200).render('login')
-    } catch (error) {
-        console.log(error)
+    const { name, email, password } = req.body
+    const userExist = users.find((user) => user.email === email)
+    if (userExist) return res.status(400).send({ status: 'error', message: 'Usuario existente' })
+    const newUser = {
+        name,
+        email,
+        password
     }
+    users.push()
+    const accessToken = generateToken(newUser)
+    res.send({
+        status: 'success',
+        message: 'Usuario creado',
+        accessToken
+    })
 })
+
+sessionRouter.get('/github', passport.authenticate('github'));
+
+sessionRouter.get(
+    '/githubcallback',
+    passport.authenticate('github', { failureRedirect: '/session/failregister' }),
+    (req, res) => {
+        req.session.user = req.user;
+        res.redirect('/api/products')
+    }
+)
+
+sessionRouter.get('/failregister', (req, res) => {
+    res.send({ status: 'error', message: 'Error al crear el usuario'})
+})
+
+sessionRouter.put('/recoverypass'), async (req, res) => {
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) return res.status(401).send({ status: 'error', message: 'Usuario inexistente'});
+    user.password = createHash(password);
+    await user.save();
+    res.send({status: 'success', message: 'Contraseña actualizada'});
+}
 
 // sessionRouter.get('/', (req, res)=>{
 //     if (req.session.counter) {
