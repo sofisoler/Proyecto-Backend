@@ -76,16 +76,6 @@ sessionRouter.put('/recoverypass'), async (req, res) => {
     res.send({status: 'success', message: 'Contraseña actualizada'});
 }
 
-// sessionRouter.get('/', (req, res)=>{
-//     if (req.session.counter) {
-//         req.session.counter++
-//         res.send(`Se ha visitado el sitio ${req.session.counter} veces.`)        
-//     } else {
-//         req.session.counter = 1
-//         res.send('¡Bienvenid@!')
-//     }
-// })
-
 sessionRouter.get('/logout', (req,res) => {
     req.session.destroy(err => {
         if(err) return res.send({status: 'Error al cerrar sesión', message: err})
