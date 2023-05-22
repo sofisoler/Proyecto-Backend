@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const UserController = require('../controllers/users.controller');
-const { authSession } = require("../middleware/auth.middleware");
+const { authorization } = require('../passport/authorizationPassport');
 
 const userRouter = Router();
 
 const { getUsers, getUser, createUser, updateUser, deleteUser } = new UserController();
 
-userRouter.get('/', authSession, getUsers);
+userRouter.get('/', authorization, getUsers);
 
 userRouter.get('/:id', getUser);
 

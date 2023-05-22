@@ -9,7 +9,7 @@ const FileStore = require('session-file-store')
 const { create } = require('connect-mongo')
 const handlebars = require('express-handlebars')
 const passport = require('passport')
-const { initializePassport } = require('./config/passport.config')
+const { initializePassport } = require('./passport/strategyPassport')
 
 const fileStorege = FileStore(session)
 

@@ -1,10 +1,11 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const { userModel } = require("../models/users.model");
+const { userModel } = require('../models/users.model');
 const { createHash, checkValidPassword } = require('../utils/bcryptPass');
-const GitHubStrategy = require('passport-github2')
+const GitHubStrategy = require('passport-github2');
 
 const initializePassport = () => {
+
     passport.use(
         'register',
         new LocalStrategy({
@@ -12,23 +13,28 @@ const initializePassport = () => {
             usernameField: 'email',
         },
         async (email, password, done) => {
-            const { first_name, last_name, username } = req.body;
-            const user = await userModel.findOne({ email });
-            if (user) {
-                done(null, false, { message: 'Usuario existente'})
+            try {
+                const { first_name, last_name, username } = req.body;
+                const user = await userModel.findOne({ email });
+                if (user) {
+                    done(null, false, { message: 'Usuario existente'})
+                }
+                const hashedPassword = createHash(password);
+                const newUser = {
+                    first_name,
+                    last_name,
+                    email,
+                    username,
+                    password: hashedPassword
+                }
+                const result = await userModel.create(newUser);
+                return done(null, result);
+            } catch (error) {
+                return done(error);
             }
-            const hashedPassword = createHash(password);
-            const newUser = {
-                first_name,
-                last_name,
-                email,
-                username,
-                password: hashedPassword
-            }
-            const result = await userModel.create(newUser);
-            return done(null, result);
         })
     )
+
     passport.use(
         'login',
         new LocalStrategy({
@@ -45,13 +51,14 @@ const initializePassport = () => {
                     password
                 })
                 if (!isValidPassword) {
-                    done(null, false)
+                    return done(null, false)
                 }
-            } catch (err) {
-                return done(err)
+            } catch (error) {
+                return done(error);
             }
         })
     )
+
     passport.use(
         'github',
         new GitHubStrategy ({
@@ -80,18 +87,24 @@ const initializePassport = () => {
             }
         })
     )
+
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        try {
+            return done(null, user._id)
+        } catch (error) {
+            return done(error);
+        }
     })
+
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await userModel.findById(id)
             done(null, user)
-        } catch (err) {
-            done(err)
+        } catch (error) {
+            return done(error);
         }
     })
-}
+};
 
 module.exports = {
     initializePassport
