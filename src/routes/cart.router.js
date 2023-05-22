@@ -1,42 +1,20 @@
 const { Router } = require("express");
-const { CartManagerMongo } = require("../Daos/CartDaos/cartManagerMongo");
+const CartController = require("../controllers/carts.controller");
 
 const cartRouter = Router();
 
-const cartsManager = new CartManagerMongo();
+const { getCarts, getCart, createCart, updateCart, deleteProductInCart, deleteProductsInCart } = new CartController();
 
-cartRouter.get("/", async (req, res) => {
-    let carts = await cartsManager.getCarts();
-    res.send(carts);
-});
+cartRouter.get("/", getCarts);
 
-cartRouter.get("/:cid", async (req, res) => {
-    const { cid } = req.params
-    let cartById = await cartsManager.getCartById(cid);
-    res.send(cartById);
-});
+cartRouter.get("/:cid", getCart);
 
-cartRouter.post("/create", async (req, res) => {
-        let newCart = await cartsManager.createCart();
-        res.send(newCart);
-});
+cartRouter.post("/create", createCart);
 
-cartRouter.post("/:cid/addProduct/:pid", async (req,res) => {
-    const { cid, pid } = req.params
-    let addProduct = await cartsManager.addProductInCart(cid, pid)
-    res.send(addProduct);
-});
+cartRouter.post("/:cid/addProductInCart/:pid", updateCart);
 
-cartRouter.delete('/:cid/deleteProduct/:pid', async (req, res) => {
-    const { cid, pid } = req.params
-    let deleteProduct = await cartsManager.deleteProduct(cid, pid);
-    res.send(deleteProduct);
-});
+cartRouter.delete('/:cid/deleteProductInCart/:pid', deleteProductInCart);
 
-cartRouter.delete('/:cid/deleteProducts', async (req, res) => {
-    const { cid } = req.params
-    let deleteProducts = await cartsManager.deleteProducts(cid);
-    res.send(deleteProducts);
-});
+cartRouter.delete('/:cid/deleteProductsInCart', deleteProductsInCart);
 
 module.exports = cartRouter
