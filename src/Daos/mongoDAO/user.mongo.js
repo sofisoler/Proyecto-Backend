@@ -18,6 +18,6 @@ class UserManagerMongo {
     deleteUser = async (uid) => {
         return await userModel.deleteOne({_id: uid})
     };
-}
+};
 
-module.exports = { UserManagerMongo }
+module.exports = UserManagerMongo

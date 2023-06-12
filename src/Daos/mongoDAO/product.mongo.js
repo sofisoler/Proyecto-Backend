@@ -15,7 +15,7 @@ class ProductManagerMongo {
         return await productsModel.create(newItem)
     };
 
-    updateProduct = async (pid, productToReplace) => {
+    updateProducts = async (pid, productToReplace) => {
         return await productsModel.updateOne({_id: pid}, productToReplace)
     };
 
@@ -24,4 +24,4 @@ class ProductManagerMongo {
     };
 };
 
-module.exports = { ProductManagerMongo }
+module.exports = ProductManagerMongo

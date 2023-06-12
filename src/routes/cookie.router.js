@@ -1,30 +1,20 @@
-const { Router } = require('express')
+const { Router } = require('express');
+const CookieController = require('../controllers/cookies.controller');
 
-const cookieRouter = Router()
+const cookieRouter = Router();
 
-cookieRouter.get('/set', (req, res)=> {
-    res.cookie('ProjectCookie', 'Valor de la Cookie', {maxAge: 10000000}).send('Cookie seteada')
-})
+const { setCookie, renderLoginPage, getCookies, setSignedCookie, getSignedCookies, deleteCookie } = new CookieController();
 
-cookieRouter.get('/', (req,res)=>{
-    res.render('login', {})
-})
+cookieRouter.get('/set', setCookie);
 
-cookieRouter.get('/get', (req, res)=>{
-    res.send(req.cookies)
-})
+cookieRouter.get('/', renderLoginPage);
 
-cookieRouter.post('/setSigned', (req, res)=>{
-    const { username, password } = req.body
-    res.cookie('username', username, { maxAge: 10000000, signed: true}).send({message: 'Cookie seteada'})
-})
+cookieRouter.get('/get', getCookies);
 
-cookieRouter.get('/getSigned', (req, res)=>{
-    res.send(req.signedCookies)
-})
+cookieRouter.post('/setSigned', setSignedCookie);
 
-cookieRouter.get('/delete', (req, res)=>{
-    res.clearCookie('CoderCookie').send('Cookie removed')
-})
+cookieRouter.get('/getSigned', getSignedCookies);
+
+cookieRouter.get('/delete', deleteCookie);
 
 module.exports = cookieRouter

@@ -3,7 +3,7 @@ const fs = require('fs');
 class CartManager {
     constructor() {
         this.path = './src/dbJson/cart.json';
-    }
+    };
 
     readCart = async () => {
         try {
@@ -12,7 +12,7 @@ class CartManager {
         } catch (error) { 
             return []
         }
-    }
+    };
 
     createCart = async (cart) => {
         let carts = await this.readCart()
@@ -24,7 +24,7 @@ class CartManager {
         carts.push({id: carts.length+1, ...cart})
         await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2), 'utf-8')
         return carts
-    }
+    };
 
     addProductInCart = async (cid, pid) => {
         try {
@@ -44,7 +44,7 @@ class CartManager {
         } catch (error) {
             return new Error(error)
         }
-    }
+    };
 
     getCartById = async (cid) => {
         let cartsDb = await this.readCart()
@@ -53,7 +53,7 @@ class CartManager {
             return "No existe el carrito"
         }
         return cart
-    }
-}
+    };
+};
 
-module.exports = {CartManager}
+module.exports = { CartManager };

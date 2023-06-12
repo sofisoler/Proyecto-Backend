@@ -1,6 +1,5 @@
-const { UserManagerMongo } = require("../Daos/UserDaos/userManagerMongo");
-
-const usersManager = new UserManagerMongo();
+const { UserDto } = require("../dto/user.dto");
+const { userService } = require("../service");
 
 class UserController {
 
@@ -13,7 +12,7 @@ class UserController {
                 prevPage,
                 hasNextPage,
                 nextPage, 
-            } = await usersManager.getUsers({page, limit})
+            } = await userService.getUsers({page, limit})
             if (!docs) {
                 return res.status(400).send('No hay usuarios')            
             }
@@ -45,7 +44,11 @@ class UserController {
             if (!first_name || !last_name) {
                 return res.status(400).send({ message: 'Completar todos los campos'})
             }
-            let addedUser = await usersManager.addUser({last_name, first_name, email})
+            const newUser = new UserDto ({
+                first_name,
+                last_name
+            })
+            let addedUser = await userService.addUser(newUser)
             res.status(201).send({ 
                 addedUser,
                 message: 'Usuario creado' 
@@ -62,7 +65,7 @@ class UserController {
             if (!userToReplace.first_name || !userToReplace.last_name || !userToReplace.email) {
                 return res.status(400).send({ message: 'Completar todos los campos'})
             }
-            let result = await usersManager.updateUser(uid, userToReplace)
+            let result = await userService.updateUser(uid, userToReplace)
             res.status(201).send({ 
                 users: result,
                 message: 'Usuario modificado' 
@@ -75,7 +78,7 @@ class UserController {
     deleteUser = async (req, res) => {
         try {
             const { uid } = req.params
-            let result = await usersManager.deleteUser(uid)
+            let result = await userService.deleteUser(uid)
             res.status(200).send({ message:"Usuario borrado", result })
         } catch (error) {
             console.log(error);

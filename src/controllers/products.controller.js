@@ -1,6 +1,4 @@
-const { ProductManagerMongo } = require("../Daos/ProductDaos/productManagerMongo");
-
-const productsManager = new ProductManagerMongo();
+const { productService } = require("../service");
 
 class ProductController {
 
@@ -14,7 +12,7 @@ class ProductController {
                 prevPage,
                 hasNextPage,
                 nextPage, 
-            } = await productsManager.getProducts({page, limit});
+            } = await productService.getProducts({page, limit});
             if (!docs) {
                 return res.status(400).send('Not Found');
             }
@@ -35,7 +33,7 @@ class ProductController {
     getProduct = async (req, res) => {
         try {
             const { pid } = req.params
-            let productById = await productsManager.getProductsById(pid);
+            let productById = await productService.getProductsById(pid);
             res.send(productById);
         } catch (error) {
             console.log(error);
@@ -48,7 +46,7 @@ class ProductController {
             if (!title || !thumbnail || !price || !code || !stock) {
                 return res.status(400).send({message: 'Corroborar que esten todos los datos'})
             }
-            let addedProduct = await productsManager.addProduct({title, description, thumbnail, price, code, stock})
+            let addedProduct = await productService.addProduct({title, description, thumbnail, price, code, stock})
             res.status(201).send({ 
                 addedProduct,
                 message: 'Product created' 
@@ -58,14 +56,14 @@ class ProductController {
         }
     };
 
-    updateProduct =  async (req, res) => {
+    updateProducts =  async (req, res) => {
         try {
             const { pid } = req.params
             let productToReplace = req.body
             if (!productToReplace.title || !productToReplace.thumbnail || !productToReplace.price || !productToReplace.code || !productToReplace.stock) {
                 return res.status(400).send({message: 'Corroborar que esten todos los datos'})
             }
-            let result = await productsManager.updateProduct(pid, productToReplace)
+            let result = await productService.updateProducts(pid, productToReplace)
             res.status(201).send({ 
                 products: result,
                 message: 'Modified product'
@@ -78,7 +76,7 @@ class ProductController {
     deleteProduct = async (req, res) => {
         try {
             const { pid } = req.params
-            let result = await productsManager.deleteProduct(pid)
+            let result = await productService.deleteProduct(pid)
             res.status(200).send({ message:"Deleted product", result })
         } catch (error) {
             console.log(error);

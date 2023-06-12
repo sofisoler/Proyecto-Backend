@@ -31,4 +31,4 @@ class CartManagerMongo {
     };
 };
 
-module.exports = { CartManagerMongo }
+module.exports = CartManagerMongo

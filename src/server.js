@@ -3,17 +3,15 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const routerApp = require('./routes')
 const { Server } = require('socket.io')
-const { ProductManager } = require('./Daos/ProductDaos/ProductDaos')
+const { ProductManager } = require('./Daos/memoryDAO/product.memory')
 const objConfig = require('./config/config')
-const FileStore = require('session-file-store')
 const { create } = require('connect-mongo')
 const handlebars = require('express-handlebars')
 const passport = require('passport')
 const { initializePassport } = require('./passport/strategyPassport')
+const { initSocket } = require('./utils/initSocket')
 
-const fileStorege = FileStore(session)
-
-objConfig.connectDB()
+objConfig.dbConection();
 
 const app = express();
 const PORT = objConfig.port
@@ -75,28 +73,4 @@ const server = app.listen(PORT, () => {
 server.on("error", (error) => console.log(`Express server error: ${error}`))
 
 const io = new Server(server)
-
-const messages = [];
-io.on('connection', socket => {
-    console.log('New client connected')
-    socket.on('message', objetoMensajeCliente => {
-        messages.push(objetoMensajeCliente)
-        io.emit('messageLogs', messages)
-    })
-    socket.on('authenticated', nombreUsuario => {
-        socket.broadcast.emit('newUserConnected', nombreUsuario)
-    })
-})
-
-io.on('connection', (socket) => {
-    const emitProducts = async () => {
-        const products = await readProducts
-        io.emit('loadProducts', products)
-    }
-    emitProducts();
-
-    socket.on ('newproduct', async (data) => {
-        const newProduct = products.addProduct(data);
-        console.log(newProduct)
-    })
-})
+initSocket(io);
