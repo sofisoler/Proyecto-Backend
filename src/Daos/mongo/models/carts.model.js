@@ -10,14 +10,14 @@ const CartSchema = new Schema({
         },
         quantity: Number
     }]
-})
+});
 
-CartSchema.pre('find', function(){
+CartSchema.pre('find', function() {
     this.populate('products.product')
-})
+});
 
 const cartsModel = model(collection,CartSchema)
 
 module.exports = {
     cartsModel
-}
+};

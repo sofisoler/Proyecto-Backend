@@ -3,6 +3,7 @@ const MongoSingleton = require("../utils/MongoSingleton");
 let ProductDaos
 let UserDaos
 let CartDaos
+let OrderDaos
 
 switch ('MONGO') {
 
@@ -18,6 +19,9 @@ switch ('MONGO') {
 
         const CartManagerMongo = require("./mongoDAO/cart.mongo")
         CartDaos = CartManagerMongo
+
+        const OrderManagerMongo = require("./mongoDAO/order.mongo")
+        OrderDaos = OrderManagerMongo
 
         break;
 
@@ -45,5 +49,6 @@ switch ('MONGO') {
 module.exports = {
     ProductDaos,
     UserDaos,
-    CartDaos
+    CartDaos,
+    OrderDaos
 };

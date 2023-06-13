@@ -1,4 +1,4 @@
-const { userModel } = require("../models/users.model");
+const { userModel } = require("../Daos/mongo/models/users.model");
 const { createHash } = require("../utils/bcryptPass");
 const { generateToken } = require("../utils/jsonwebtoken");
 

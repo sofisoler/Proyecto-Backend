@@ -28,12 +28,12 @@ const ProductSchema = new Schema({
         type: Number,
         required: true
     }
-})
+});
 
-ProductSchema.plugin(mongoosePaginate)
+ProductSchema.plugin(mongoosePaginate);
 
-const productsModel = model(collection , ProductSchema)
+const productsModel = model(collection , ProductSchema);
 
 module.exports = {
     productsModel
-}
+};

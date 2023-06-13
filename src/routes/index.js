@@ -6,6 +6,7 @@ const chatRouter = require('./chat.router');
 const { uploader } = require('../utils/uploader');
 const cookieRouter = require('./cookie.router');
 const sessionRouter = require('./session.router');
+const orderRouter = require('./order.router');
 
 const router = Router();
 
@@ -15,6 +16,7 @@ router.use('/api/products', productRouter)
 router.use('/api/cart', cartRouter)
 router.use('/cookie', cookieRouter)
 router.use('/session', sessionRouter)
+router.use('/api/orders', orderRouter)
 
 router.post('/upload', uploader.single('myFile'),(req, res)=>{
     res.send('File uploaded successfully')

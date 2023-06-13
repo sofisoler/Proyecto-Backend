@@ -24,11 +24,11 @@ const UserSchema = new Schema ({
         required: true
     },
     password: String
-})
+});
 
-UserSchema.plugin(mongoosePaginate)
-const userModel = model(collection, UserSchema)
+UserSchema.plugin(mongoosePaginate);
+const userModel = model(collection, UserSchema);
 
 module.exports = {
     userModel
-}
+};
