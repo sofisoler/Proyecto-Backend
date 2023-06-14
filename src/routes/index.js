@@ -9,6 +9,9 @@ const sessionRouter = require('./session.router');
 const orderRouter = require('./order.router');
 const mailRouter = require('./mail.router');
 const smsRouter = require('./sms.router');
+const compression = require('express-compression');
+const errorHandler = require('../middleware/errors');
+const mockingController = require('../controllers/mocking.controller');
 
 const router = Router();
 
@@ -22,8 +25,19 @@ router.use('/api/orders', orderRouter)
 router.use('/email', mailRouter)
 router.use('/sms', smsRouter)
 
+router.use(compression({
+    brotli: {
+        enabled: true,
+        zlib: {}
+    }
+}));
+
+router.use(errorHandler);
+
 router.post('/upload', uploader.single('myFile'),(req, res)=>{
     res.send('File uploaded successfully')
 })
+
+router.get('/mockingproducts', mockingController.getMockingProducts);
 
 module.exports = router

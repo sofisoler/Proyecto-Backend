@@ -1,5 +1,8 @@
 const { UserDto } = require("../dto/user.dto");
 const { userService } = require("../service");
+const { CustomError } = require("../utils/errors/CustomError");
+const { EErrors } = require("../utils/errors/enums");
+const { generateUserErrorInfo } = require("../utils/errors/info");
 
 class UserController {
 
@@ -38,23 +41,25 @@ class UserController {
         }
     };
 
-    createUser = async (req, res) => {
+    createUser = async (req, res, next) => {
         try {
-            let { first_name, last_name } = req.body
-            if (!first_name || !last_name) {
-                return res.status(400).send({ message: 'Completar todos los campos'})
+            let { first_name, last_name, email } = req.body
+            if (!first_name || !last_name || !email) {
+                CustomError.createError({
+                    name: "User creation error",
+                    cause: generateUserErrorInfo({ first_name, last_name, email }),
+                    message: "Error trying to create user",
+                    code: EErrors.INVALID_TYPES_ERROR
+                });
             }
-            const newUser = new UserDto ({
-                first_name,
-                last_name
-            })
-            let addedUser = await userService.addUser(newUser)
-            res.status(201).send({ 
+            let addedUser = await users.push({first_name, last_name, email});
+            res.status(201).send({
+                users,
                 addedUser,
-                message: 'Usuario creado' 
-            })
+                message: 'Usuario creado'
+            });
         } catch (error) {
-            console.log(error);
+            next(error);
         }
     };
 
