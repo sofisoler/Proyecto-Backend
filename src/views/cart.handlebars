@@ -1,0 +1,33 @@
+<div>
+    {{#if cart.products.length}}
+        <ul class="list-group">
+            {{#each cart.products}}
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col">
+                            <h5>{{this.product.title}}</h5>
+                            <p>${{this.product.price}}</p>
+                        </div>
+                        <div class="col-auto">
+                            <form action="/api/cart/{{../cart._id}}/deleteProductInCart/{{this.product._id}}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button class="btn btn-outline-danger" type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
+        <div class="text-center">
+            <form action="/api/cart/{{cart._id}}/deleteProductsInCart" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas vaciar el carrito?')">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-outline-danger mt-4" type="submit">Vaciar carrito</button>
+            </form>
+            <form action="/api/cart/{{cart._id}}/confirmCheckout" method="POST">
+                <button class="btn btn-outline-secondary mt-4" type="submit">Finalizar Compra</button>
+            </form>
+        </div>
+    {{else}}
+        <p class="text-center">No hay productos en el carrito</p>
+    {{/if}}
+</div>

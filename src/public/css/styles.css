@@ -7,14 +7,23 @@ h1 {
 }
 
 .card-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 1rem;
 }
 
-.card {
-    width: 18rem;
-    margin-right: 1rem;
+.card-products {
+    width: 16rem;
+    height: 16rem;
+}
+
+.card-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 10px;
+    text-align: center;
 }

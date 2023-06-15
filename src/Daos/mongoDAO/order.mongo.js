@@ -6,7 +6,7 @@ class OrderManagerMongo {
         this.ordersModel = ordersModel
     };
 
-    async get() {
+    async get({}) {
         return await this.ordersModel.find({})
     };
 
@@ -19,9 +19,13 @@ class OrderManagerMongo {
         return await this.ordersModel.create(newOrder)
     };
 
-    async update(oid) {};
+    async update(oid, orderToUpdate) {
+        return await this.ordersModel.updateOne({_id: oid}, orderToUpdate);
+    };
 
-    async delete(oid) {};
+    async delete(oid) {
+        return await this.ordersModel.deleteOne({_id: oid});
+    };
 };
 
 module.exports =  OrderManagerMongo

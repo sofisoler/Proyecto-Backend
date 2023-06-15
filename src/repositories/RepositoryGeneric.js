@@ -4,11 +4,11 @@ class RepositoryGeneric {
         this.dao = dao
     };
 
-    async getItems() {
-        return await this.dao.get()
+    async getItems({page, limit}) {
+        return await this.dao.get({page, limit})
     };
 
-    async getItem(id) {
+    async getItemById(id) {
         return await this.dao.getById(id)
     };
 
@@ -16,9 +16,17 @@ class RepositoryGeneric {
         return await this.dao.create(newItem)
     };
 
-    async updateItem(id) {};
+    async updateItem(id, itemToUpdate) {
+        return await this.dao.update(id, itemToUpdate)
+    };
 
-    async deleteItem(id) {};
+    async deleteItem(cid, pid) {
+        return await this.dao.delete(cid, pid)
+    };
+
+    async deleteItems(id) {
+        return await this.dao.deleteItems(id)
+    };
 };
 
 module.exports= RepositoryGeneric

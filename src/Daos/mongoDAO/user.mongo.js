@@ -2,20 +2,20 @@ const { userModel } = require("../mongo/models/users.model");
 
 class UserManagerMongo {
 
-    getUsers = async ({ page, limit, query='' }) =>  {
+    get = async ({ page, limit, query='' }) =>  {
         const resp = await userModel.paginate({}, {limit, page, lean:true})
         return resp
     };
     
-    addUser = async (newUser) => {
+    create = async (newUser) => {
         return await userModel.create(newUser) 
     };
 
-    updateUser = async (uid, userToReplace) => {
+    update = async (uid, userToReplace) => {
         return await userModel.updateOne({_id: uid}, userToReplace)
     };
 
-    deleteUser = async (uid) => {
+    delete = async (uid) => {
         return await userModel.deleteOne({_id: uid})
     };
 };

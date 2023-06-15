@@ -26,6 +26,14 @@ app.set('views', __dirname+'/views')
 app.use(express.json())
 app.use(express.urlencoded({extended : true}));
 
+app.use((req, res, next) => {
+    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      req.method = req.body._method.toUpperCase();
+      delete req.body._method;
+    }
+    next();
+});
+
 app.use(cookieParser('secret-Project'))
 app.use(session({
     store: create({

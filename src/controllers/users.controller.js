@@ -1,4 +1,3 @@
-const { UserDto } = require("../dto/user.dto");
 const { userService } = require("../service");
 const { CustomError } = require("../utils/errors/CustomError");
 const { EErrors } = require("../utils/errors/enums");
@@ -15,7 +14,7 @@ class UserController {
                 prevPage,
                 hasNextPage,
                 nextPage, 
-            } = await userService.getUsers({page, limit})
+            } = await userService.getItems({page, limit})
             if (!docs) {
                 return res.status(400).send('No hay usuarios')            
             }
@@ -70,7 +69,7 @@ class UserController {
             if (!userToReplace.first_name || !userToReplace.last_name || !userToReplace.email) {
                 return res.status(400).send({ message: 'Completar todos los campos'})
             }
-            let result = await userService.updateUser(uid, userToReplace)
+            let result = await userService.updateItem(uid, userToReplace)
             res.status(201).send({ 
                 users: result,
                 message: 'Usuario modificado' 
@@ -83,7 +82,7 @@ class UserController {
     deleteUser = async (req, res) => {
         try {
             const { uid } = req.params
-            let result = await userService.deleteUser(uid)
+            let result = await userService.deleteItem(uid)
             res.status(200).send({ message:"Usuario borrado", result })
         } catch (error) {
             console.log(error);

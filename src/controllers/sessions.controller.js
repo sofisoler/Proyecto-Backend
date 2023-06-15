@@ -18,10 +18,8 @@ class SessionController {
             const user = await userModel.findOne({ username, password });
             if (!user) return res.status(400).send({ status: 'error', message: 'Revisar usuario y contraseña' });
             const accessToken = generateToken(user);
-            res.send({
-                status: 'success',
-                payload: accessToken
-            });
+            req.session.user = user;
+            res.redirect('/api/products');
         } catch (error) {
             console.log(error);
         }

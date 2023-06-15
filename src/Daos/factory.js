@@ -11,26 +11,26 @@ switch ('MONGO') {
 
         MongoSingleton.getInstance()
         
-        const ProductManagerMongo = require("./mongoDAO/product.mongo") 
+        const ProductManagerMongo = require("./mongoDAO/product.mongo");
         ProductDaos = ProductManagerMongo
 
-        const UserManagerMongo = require("./mongoDAO/user.mongo")
+        const UserManagerMongo = require("./mongoDAO/user.mongo");
         UserDaos = UserManagerMongo
 
-        const CartManagerMongo = require("./mongoDAO/cart.mongo")
+        const CartManagerMongo = require("./mongoDAO/cart.mongo");
         CartDaos = CartManagerMongo
 
-        const OrderManagerMongo = require("./mongoDAO/order.mongo")
+        const OrderManagerMongo = require("./mongoDAO/order.mongo");
         OrderDaos = OrderManagerMongo
 
         break;
 
     case 'MEMORY':
 
-        const ProductManager = require("./memoryDAO/product.memory") 
+        const { ProductManager } = require("./memoryDAO/product.memory");
         ProductDaos = ProductManager
 
-        const CartManager = require("./memoryDAO/cart.memory") 
+        const { CartManager } = require("./memoryDAO/cart.memory");
         CartDaos = CartManager
 
         break;

@@ -1,13 +1,13 @@
 <div>
     <div class="card-container">
         {{#each products}}
-            <div class="card">
+            <div class="card card-products m-1">
                 <div class="card-body">
-                    <h5 class="card-title">Título: {{this.title}}</h5>
-                    <p class="card-text">Descripción: {{this.description}}</p>
-                    <p class="card-price">Precio: {{this.price}}</p>
-                    <form class="add-to-cart-form">
-                        <button class="btn btn-outline-secondary" type="submit" _id="{{_id}}">Agregar al carrito</button>
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                    <p class="card-price">${{this.price}}</p>
+                    <form class="add-to-cart-form" action="/api/cart/648a52f9f0e5e735551ba791/addProductInCart/{{this._id}}" method="POST">
+                        <button class="btn btn-outline-secondary card-button" type="submit">Agregar al carrito</button>
                     </form>
                 </div>
             </div>

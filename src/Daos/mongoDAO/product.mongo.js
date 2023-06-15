@@ -2,24 +2,23 @@ const { productsModel } = require("../mongo/models/products.model");
 
 class ProductManagerMongo {
 
-    getProducts = async ({ page, limit, query='' }) =>  {
-        const resp = await productsModel.paginate({}, {limit, page, lean:true })
-        return resp
+    get = async ({ page, limit, query='' }) =>  {
+        return await productsModel.paginate({}, {limit, page, lean:true })
     };
 
-    getProductsById = async (pid) => {
+    getById = async (pid) => {
         return await productsModel.findById({_id: pid});
     };
     
-    addProduct = async (newItem) => {
+    create = async (newItem) => {
         return await productsModel.create(newItem)
     };
 
-    updateProducts = async (pid, productToReplace) => {
+    update = async (pid, productToReplace) => {
         return await productsModel.updateOne({_id: pid}, productToReplace)
     };
 
-    deleteProduct = async (pid) => {
+    delete = async (pid) => {
         return await productsModel.deleteOne({_id: pid})
     };
 };
