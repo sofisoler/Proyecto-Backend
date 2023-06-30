@@ -1,6 +1,7 @@
 const { userModel } = require("../Daos/mongo/models/users.model");
 const { createHash } = require("../utils/bcryptPass");
 const { generateToken } = require("../utils/jsonwebtoken");
+const { logger } = require("../utils/logger");
 
 class SessionController {
 
@@ -8,7 +9,7 @@ class SessionController {
         try {
             res.render('login', {});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -21,7 +22,7 @@ class SessionController {
             req.session.user = user;
             res.redirect('/api/products');
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -32,7 +33,7 @@ class SessionController {
                 payload: req.user
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -40,7 +41,7 @@ class SessionController {
         try {
             res.render('register');
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -66,7 +67,7 @@ class SessionController {
                 accessToken
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -75,7 +76,7 @@ class SessionController {
             req.session.user = req.user;
             res.redirect('/api/products');
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -83,7 +84,7 @@ class SessionController {
         try {
             res.send({ status: 'error', message: 'Error al crear el usuario'});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -96,7 +97,7 @@ class SessionController {
             await user.save();
             res.send({status: 'success', message: 'Contraseña actualizada'});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -107,7 +108,7 @@ class SessionController {
                 res.render('login');
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

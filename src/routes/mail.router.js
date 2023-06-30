@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { sendMailTransport } = require('../utils/nodemailer');
+const { logger } = require('../utils/logger');
 
 const mailRouter = Router();
 
@@ -8,7 +9,7 @@ mailRouter.get('/', async (req, res) => {
         sendMailTransport()
         res.send('Email enviado');
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
 });
 

@@ -1,5 +1,6 @@
 const faker = require('faker');
 const { productsModel } = require('../Daos/mongo/models/products.model');
+const { logger } = require('../utils/logger');
 
 const generateMockProducts = () => {
     const mockProducts = [];
@@ -26,7 +27,7 @@ const getMockingProducts = async (req, res) => {
       res.status(200).json({ message: 'Mock products created successfully' });
     } 
     catch (error) {
-      console.log(error);
+      logger.error(error);
       res.status(500).json({ error: 'Internal server error' });
     }
 };

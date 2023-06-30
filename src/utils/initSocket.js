@@ -1,9 +1,11 @@
+const { logger } = require("./logger");
+
 const messages = [];
 
 const initSocket = (io) => {
 
     io.on('connection', (socket) => {
-        console.log('New client connected')
+        logger.info('New client connected')
 
         socket.on('message', objetoMensajeCliente => {
             messages.push(objetoMensajeCliente)

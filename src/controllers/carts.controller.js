@@ -1,4 +1,5 @@
 const { cartService } = require("../service");
+const { logger } = require("../utils/logger");
 
 class CartController {
 
@@ -7,7 +8,7 @@ class CartController {
             let carts = await cartService.getItems({});
             res.send(carts);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -18,7 +19,7 @@ class CartController {
             const cartData = cartById.toObject();
             res.render('cart', { cart: cartData, user: req.session.user });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -27,7 +28,7 @@ class CartController {
             let newCart = await cartService.createItem();
             res.send(newCart);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
     
@@ -37,7 +38,7 @@ class CartController {
             let addProduct = await cartService.updateItem(cid, pid);
             res.send(addProduct);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -47,7 +48,7 @@ class CartController {
             let deleteProduct = await cartService.deleteItem(cid, pid);
             res.send(deleteProduct);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -57,7 +58,7 @@ class CartController {
             let deleteProducts = await cartService.deleteItems(cid);
             res.send(deleteProducts);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 

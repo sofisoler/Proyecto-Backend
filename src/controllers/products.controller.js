@@ -1,4 +1,5 @@
 const { productService } = require("../service");
+const { logger } = require("../utils/logger");
 
 class ProductController {
 
@@ -26,7 +27,7 @@ class ProductController {
                 nextPage, 
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -36,7 +37,7 @@ class ProductController {
             let productById = await productService.getItemById(pid);
             res.send(productById);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -52,7 +53,7 @@ class ProductController {
                 message: 'Product created' 
             })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -69,7 +70,7 @@ class ProductController {
                 message: 'Modified product'
             })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -79,7 +80,7 @@ class ProductController {
             let result = await productService.deleteItem(pid)
             res.status(200).send({ message:"Deleted product", result })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

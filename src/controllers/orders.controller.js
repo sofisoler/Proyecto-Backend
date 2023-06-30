@@ -1,4 +1,5 @@
 const { orderService } = require("../service");
+const { logger } = require("../utils/logger");
 
 class OrderController {
 
@@ -10,7 +11,7 @@ class OrderController {
                 payload: orders
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -23,7 +24,7 @@ class OrderController {
                 payload: order
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -36,7 +37,7 @@ class OrderController {
                 message: 'Order created'
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -50,7 +51,7 @@ class OrderController {
                 message: 'Order updated'
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -63,7 +64,7 @@ class OrderController {
                 message: 'Order deleted'
             });
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

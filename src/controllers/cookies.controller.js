@@ -1,10 +1,12 @@
+const { logger } = require("../utils/logger");
+
 class CookieController {
 
     setCookie = (req, res) => {
         try {
             res.cookie('ProjectCookie', 'Cookie value', {maxAge: 10000000}).send('Set cookie');
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -12,7 +14,7 @@ class CookieController {
         try {
             res.render('login', {});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -20,7 +22,7 @@ class CookieController {
         try {
             res.send(req.cookies);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -29,7 +31,7 @@ class CookieController {
             const { username, password } = req.body
             res.cookie('username', username, { maxAge: 10000000, signed: true}).send({message: 'Set cookie'});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -37,7 +39,7 @@ class CookieController {
         try {
             res.send(req.signedCookies);
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -45,7 +47,7 @@ class CookieController {
         try {
             res.clearCookie('CoderCookie').send('Cookie removed');
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

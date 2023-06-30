@@ -1,3 +1,4 @@
+const { logger } = require("../../utils/logger");
 const { ordersModel } = require("../mongo/models/orders.model");
 
 class OrderManagerMongo {
@@ -15,7 +16,7 @@ class OrderManagerMongo {
     };
 
     async create(newOrder) {
-        console.log('dao',newOrder)
+        logger.info('dao',newOrder)
         return await this.ordersModel.create(newOrder)
     };
 

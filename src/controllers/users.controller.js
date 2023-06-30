@@ -2,6 +2,7 @@ const { userService } = require("../service");
 const { CustomError } = require("../utils/errors/CustomError");
 const { EErrors } = require("../utils/errors/enums");
 const { generateUserErrorInfo } = require("../utils/errors/info");
+const { logger } = require("../utils/logger");
 
 class UserController {
 
@@ -27,7 +28,7 @@ class UserController {
                 nextPage
             })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -36,7 +37,7 @@ class UserController {
             const {id} = req.params
             res.status(200).send(id)
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -75,7 +76,7 @@ class UserController {
                 message: 'Usuario modificado' 
             })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 
@@ -85,7 +86,7 @@ class UserController {
             let result = await userService.deleteItem(uid)
             res.status(200).send({ message:"Usuario borrado", result })
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

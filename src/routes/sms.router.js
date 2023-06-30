@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const { sendSms } = require('../utils/sendSmsTwilio');
+const { logger } = require('../utils/logger');
 
 const smsRouter = Router();
 
@@ -8,7 +9,7 @@ smsRouter.get('/', async (req, res) => {
         await sendSms('Mensaje de prueba')
         res.send('SMS enviado');
     } catch (error) {
-        console.log(error);
+        logger.error(error);
     }
 });
 

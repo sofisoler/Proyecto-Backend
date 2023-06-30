@@ -1,10 +1,12 @@
+const { logger } = require("../utils/logger");
+
 class ChatController {
 
     renderChatPage = (req, res) => {
         try {
             res.render('chat', {});
         } catch (error) {
-            console.log(error);
+            logger.error(error);
         }
     };
 };

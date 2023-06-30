@@ -1,8 +1,10 @@
+const { logger } = require("../../utils/logger")
+
 const socket = io()
 
 const loadProducts = () => {
     socket.on('loadProducts', (data) => {
-        console.log(data)
+        logger.info(data)
     })
 }
 

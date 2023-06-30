@@ -10,6 +10,7 @@ const handlebars = require('express-handlebars')
 const passport = require('passport')
 const { initializePassport } = require('./passport/strategyPassport')
 const { initSocket } = require('./utils/initSocket')
+const { addLogger, logger } = require('./utils/logger')
 
 objConfig.dbConection();
 
@@ -58,6 +59,8 @@ app.use(cookieParser())
 
 app.use(routerApp)
 
+app.use(addLogger)
+
 app.get('/home', async (req, res) => {
     let allProducts = await readProducts
     res.render('home', {
@@ -75,10 +78,10 @@ app.get('/realTimeProducts', async (req, res) => {
 })
 
 const server = app.listen(PORT, () => {
-    console.log(`Express server listening on ${server.address().port}`)
+    logger.info(`Express server listening on ${server.address().port}`)
 });
 
-server.on("error", (error) => console.log(`Express server error: ${error}`))
+server.on("error", (error) => logger.error(`Express server error: ${error}`))
 
 const io = new Server(server)
 initSocket(io);
