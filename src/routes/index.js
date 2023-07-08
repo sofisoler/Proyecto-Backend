@@ -12,6 +12,7 @@ const smsRouter = require('./sms.router');
 const compression = require('express-compression');
 const errorHandler = require('../middleware/errors');
 const mockingController = require('../controllers/mocking.controller');
+const resetPasswordRouter = require('./reset-password.router');
 
 const router = Router();
 
@@ -24,6 +25,7 @@ router.use('/session', sessionRouter)
 router.use('/api/orders', orderRouter)
 router.use('/email', mailRouter)
 router.use('/sms', smsRouter)
+router.use('/reset-password', resetPasswordRouter)
 
 router.use(compression({
     brotli: {
