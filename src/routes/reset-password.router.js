@@ -3,8 +3,10 @@ const ResetPasswordController = require('../controllers/reset-password.controlle
 
 const resetPasswordRouter = Router();
 
-const { renderResetPassword } = new ResetPasswordController();
+const { renderResetPassword, emailResetPassword } = new ResetPasswordController();
 
 resetPasswordRouter.get('/', renderResetPassword);
+
+resetPasswordRouter.get('/email', emailResetPassword);
 
 module.exports = resetPasswordRouter
