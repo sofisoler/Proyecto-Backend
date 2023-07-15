@@ -1,0 +1,82 @@
+paths:
+  /api/cart/:
+    get:
+      summary: Obtiene todos los carritos.
+      tags:
+        - Carts
+      responses:
+        '200':
+          description: Los carritos fueron obtenidos correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del server, usualmente generado por una query defectuosa o un fallo en la DB.
+    post:
+      summary: Crear un nuevo carrito.
+      tags:
+       - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/requestBodies/updateCart'
+      responses:
+        '200':
+          description: Carrito creado.
+  /api/cart/{cid}:
+    get:
+      summary: Obtiene un carrito de la DB mediante un ID.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se desea solicitar.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El carrito fue obtenido correctamente.
+          content:
+            applications/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por Mongo.
+        products:
+          type: array
+          description: Productos en el carrito.
+      example:
+        _id: ObjectId('64413404c9dc9161a1eca841')
+        products: [{
+          product: 643ef00d3a44b90efba6bcbc,
+          _id: 64449707d50547eace575d42
+        }, {
+          product: 643ef00d3a44b90efba6bcba,
+          _id: 64449716d50547eace575d47
+        }]
+  requestBodies: 
+    updateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          description: Productos en el carrito.
+      example:
+        products: [{
+          product: 643ef00d3a44b90efba6bcbc,
+        }, {
+          product: 643ef00d3a44b90efba6bcba,
+        }]

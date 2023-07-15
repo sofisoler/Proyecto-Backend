@@ -11,6 +11,8 @@ const passport = require('passport')
 const { initializePassport } = require('./passport/strategyPassport')
 const { initSocket } = require('./utils/initSocket')
 const { addLogger, logger } = require('./utils/logger')
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUiExpress = require('swagger-ui-express');
 
 objConfig.dbConection();
 
@@ -85,3 +87,17 @@ server.on("error", (error) => logger.error(`Express server error: ${error}`))
 
 const io = new Server(server)
 initSocket(io);
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.1',
+        info: {
+            title: "Documentación de Proyecto Backend",
+            description: "API pensada para desafio Swagger"
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
