@@ -6,7 +6,11 @@ class UserManagerMongo {
         const resp = await userModel.paginate({}, {limit, page, lean:true})
         return resp
     };
-    
+
+    getById = async (uid) => {
+        return await userModel.findById({_id: uid});
+    };
+
     create = async (newUser) => {
         return await userModel.create(newUser) 
     };

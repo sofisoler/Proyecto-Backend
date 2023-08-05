@@ -3,6 +3,7 @@ const { CustomError } = require("../utils/errors/CustomError");
 const { EErrors } = require("../utils/errors/enums");
 const { generateUserErrorInfo } = require("../utils/errors/info");
 const { logger } = require("../utils/logger");
+const { uploader } = require("../utils/uploader");
 
 class UserController {
 
@@ -52,7 +53,7 @@ class UserController {
                     code: EErrors.INVALID_TYPES_ERROR
                 });
             }
-            let addedUser = await users.push({first_name, last_name, email});
+            let addedUser = await userService.createItem({first_name, last_name, email})
             res.status(201).send({
                 users,
                 addedUser,
@@ -88,6 +89,58 @@ class UserController {
         } catch (error) {
             logger.error(error);
         }
+    };
+
+    uploadUserDocuments = async (req, res, next) => {
+        try {
+            const { uid } = req.params;
+            uploader.array('documents')(req, res, async (error) => {
+                if (error) {
+                    logger.error(error);
+                    return res.status(500).send({ message: 'Error al subir los archivos' });
+                }
+                const files = req.files;
+                const documents = [];
+                files.forEach((file) => {
+                    const { originalname, path } = file;
+                    const document = {
+                        name: originalname,
+                        reference: path
+                    };
+                    documents.push(document);
+                });
+                const user = await userService.getItemById(uid);
+                if (!user) {
+                    return res.status(404).send({ message: 'Usuario no encontrado' });
+                }
+                user.documents = documents;
+                user.last_connection = new Date();
+                await user.save();
+                res.status(200).send({ message: 'Documentos subidos exitosamente', user });
+            });
+        } catch (error) {
+            logger.error(error);
+            next(error);
+        }
+    };
+
+    getUserDocuments = async (req, res) => {
+        try {
+            const { uid } = req.params;
+            const user = await userService.getItemById(uid);
+            if (!user) {
+                return res.status(404).send({ message: 'Usuario no encontrado' });
+            }
+            res.status(200).send({ documents: user.documents });
+        } catch (error) {
+            logger.error(error);
+            res.status(500).send({ message: 'Error al obtener los documentos del usuario' });
+        }
+    };
+
+    showUploadDocumentsView = (req, res) => {
+        const { uid } = req.params;
+        res.render('upload', { userId: uid });
     };
 };
 

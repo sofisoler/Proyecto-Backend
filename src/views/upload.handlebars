@@ -1,0 +1,16 @@
+<div class="container mt-5">
+    <h1 class="text-center">Subir Documentos</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="/api/users/{{userId}}/documents" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="documents" class="mb-3">Seleccione los documentos:</label>
+                    <input type="file" class="form-control mb-3" name="documents" id="documents" multiple>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-outline-secondary">Subir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
