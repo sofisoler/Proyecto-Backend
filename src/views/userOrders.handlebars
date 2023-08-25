@@ -1,0 +1,30 @@
+<div class="container text-white">
+    {{#if userOrders}}
+        <h1 class="mt-5">Pedidos</h1>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>FECHA DEL PEDIDO</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each userOrders}}
+                    <tr>
+                        <td>{{this.created}}</td>
+                        <td>${{this.total}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{else}}
+        <div class="text-center m-2">
+            <h1 class="text-white">No tienes pedidos aún</h1>
+            <div class="d-flex flex-column align-items-center">
+                <button class="btn btn-light mt-3">
+                    <a href="/api/products" class="text-decoration-none text-dark">Ver productos</a>
+                </button>
+            </div>
+        </div>
+    {{/if}}
+</div>

@@ -10,20 +10,6 @@ const transport = createTransport({
     }
 });
 
-sendMailTransport = async () => {
-    await transport.sendMail ({
-        from: `Ecommerce <${process.env.GMAIL_MAIL_USER}>`,
-        to: 'sofisoler01@gmail.com',
-        subject: 'Correo de prueba',
-        html: `
-            <div>
-                <h1>Correo de prueba</h1>
-            </div>
-        `,
-        attachments: []
-    });
-};
-
 sendMailResetPassword = async () => {
     await transport.sendMail ({
         from: `Ecommerce <${process.env.GMAIL_MAIL_USER}>`,
@@ -42,6 +28,5 @@ sendMailResetPassword = async () => {
 };
 
 module.exports = {
-    sendMailTransport,
     sendMailResetPassword
 };

@@ -1,18 +1,20 @@
-const { Router } = require('express');
-const { OrderController } = require('../controllers/orders.controller');
+const { Router } = require("express");
+const { OrderController } = require("../controllers/orders.controller");
 
 const orderRouter = Router();
 
-const orderController = new OrderController();
+const { getUserOrders, getOrders, getOrder, createOrder, updateOrder, deleteOrder } = new OrderController();
 
-orderRouter.get('/', orderController.getOrders);
+orderRouter.get('/:uid', getUserOrders);
 
-orderRouter.get('/:oid', orderController.getOrder);
+orderRouter.get('/orders', getOrders);
 
-orderRouter.post('/', orderController.createOrder);
+orderRouter.get('/:oid', getOrder);
 
-orderRouter.put('/:oid', orderController.updateOrder);
+orderRouter.post('/', createOrder);
 
-orderRouter.delete('/:oid', orderController.deleteOrder);
+orderRouter.put('/:oid', updateOrder);
 
-module.exports = orderRouter
+orderRouter.delete('/:oid', deleteOrder);
+
+module.exports = orderRouter;

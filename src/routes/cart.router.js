@@ -3,18 +3,26 @@ const CartController = require("../controllers/carts.controller");
 
 const cartRouter = Router();
 
-const { getCarts, getCart, createCart, updateCart, deleteProductInCart, deleteProductsInCart } = new CartController();
+const { checkLoginStatus, getCarts, getCart, createCart, createCartForCurrentUser, updateCart, deleteProductInCart, deleteProductsInCart, confirmCheckout, updateProductQuantity } = new CartController();
 
-cartRouter.get("/", getCarts);
+cartRouter.get('/checkLogin', checkLoginStatus);
 
-cartRouter.get("/:cid", getCart);
+cartRouter.get('/carts', getCarts);
 
-cartRouter.post("/create", createCart);
+cartRouter.get('/:cid', getCart);
 
-cartRouter.post("/:cid/addProductInCart/:pid", updateCart);
+cartRouter.post('/create', createCart);
+
+cartRouter.get('/', createCartForCurrentUser);
+
+cartRouter.post('/:cid/addProductInCart/:pid', updateCart);
 
 cartRouter.delete('/:cid/deleteProductInCart/:pid', deleteProductInCart);
 
 cartRouter.delete('/:cid/deleteProductsInCart', deleteProductsInCart);
 
-module.exports = cartRouter
+cartRouter.post('/:cid/confirmCheckout', confirmCheckout);
+
+cartRouter.post('/:cid/updateProductQuantity/:pid', updateProductQuantity);
+
+module.exports = cartRouter;

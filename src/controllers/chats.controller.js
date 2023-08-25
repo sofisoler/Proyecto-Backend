@@ -11,4 +11,4 @@ class ChatController {
     };
 };
 
-module.exports = ChatController
+module.exports = ChatController;

@@ -1,32 +1,37 @@
-const { logger } = require("../../utils/logger");
 const { ordersModel } = require("../mongo/models/orders.model");
 
 class OrderManagerMongo {
 
-    constructor() {
-        this.ordersModel = ordersModel
+    // Obtener todas las órdenes
+    get = async ({}) =>  {
+        return await ordersModel.find({});
     };
 
-    async get({}) {
-        return await this.ordersModel.find({})
+    // Obtener una orden por su ID
+    getById = async (oid) =>  {
+        return await ordersModel.findOne({ _id: oid });
     };
 
-    async getById(oid) {
-        return await this.ordersModel.findOne({_id: oid})
+    // Crear una nueva orden en la base de datos
+    create = async (newOrder) =>  {
+        return await ordersModel.create(newOrder);
     };
 
-    async create(newOrder) {
-        logger.info('dao',newOrder)
-        return await this.ordersModel.create(newOrder)
+    // Actualizar una orden por su ID
+    update = async (oid, orderToUpdate) =>  {
+        return await ordersModel.updateOne({ _id: oid }, orderToUpdate);
     };
 
-    async update(oid, orderToUpdate) {
-        return await this.ordersModel.updateOne({_id: oid}, orderToUpdate);
+    // Eliminar una orden por su ID
+    delete = async (oid) =>  {
+        return await ordersModel.deleteOne({ _id: oid });
     };
 
-    async delete(oid) {
-        return await this.ordersModel.deleteOne({_id: oid});
+    // Obtener órdenes de un usuario por su ID
+    getUserOrders = async (uid) => {
+        const order = await ordersModel.find({ user: uid });
+        return order;
     };
-};
+}
 
-module.exports =  OrderManagerMongo
+module.exports =  OrderManagerMongo;

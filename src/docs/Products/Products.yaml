@@ -14,11 +14,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Product'
         '500':
-          description: Error interno del server, usualmente generado por una query defectuosa o un fallo en la DB.
+          description: Error interno del servidor, usualmente generado por una consulta defectuosa o un fallo en la base de datos.
     post:
       summary: Crear un nuevo producto.
       tags:
-       - Products
+        - Products
       requestBody:
         required: true
         content:
@@ -30,21 +30,21 @@ paths:
           description: Producto creado.
   /api/products/{pid}:
     get:
-      summary: Obtiene un producto de la DB mediante un ID.
+      summary: Obtiene un producto de la base de datos mediante su ID.
       tags:
         - Products
       parameters:
         - name: pid
           in: path
           required: true
-          description: ID del producto que se desea solicitar.
+          description: ID del producto que se desea obtener.
           schema:
             type: string
       responses:
         '200':
           description: El producto fue obtenido correctamente.
           content:
-            applications/json:
+            application/json:
               schema:
                 $ref: '#/components/schemas/Product'
 components:

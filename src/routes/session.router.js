@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const SessionController = require('../controllers/sessions.controller');
-const passport = require('passport');
-const { authToken } = require('../utils/jsonwebtoken');
+const { Router } = require("express");
+const SessionController = require("../controllers/sessions.controller");
+const passport = require("passport");
+const { authToken } = require("../utils/jsonwebtoken");
 
 const sessionRouter = Router();
 
@@ -27,4 +27,4 @@ sessionRouter.put('/recoverypass', updatePassword);
 
 sessionRouter.get('/logout', logoutSession);
 
-module.exports = sessionRouter
+module.exports = sessionRouter;

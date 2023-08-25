@@ -1,18 +1,25 @@
-const { Router } = require('express');
-const ProductController = require('../controllers/products.controller');
+const { Router } = require("express");
+const ProductController = require("../controllers/products.controller");
+const { authorization } = require("../passport/authorizationPassport");
 
 const productRouter = Router();
 
-const { getProducts, getProduct, createProduct, updateProducts, deleteProduct } = new ProductController();
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct, uploadProductThumbnail, getProductThumbnail, showUploadDocumentsView } = new ProductController();
 
-productRouter.get("/", getProducts);
+productRouter.get('/', getProducts);
 
-productRouter.get("/:pid", getProduct);
+productRouter.get('/:pid', getProduct);
 
-productRouter.post("/", createProduct);
+productRouter.post('/', createProduct);
 
-productRouter.put('/:pid', updateProducts);
+productRouter.put('/:pid', updateProduct);
 
 productRouter.delete('/:pid', deleteProduct);
 
-module.exports = productRouter
+productRouter.post('/:pid/thumbnail', authorization, uploadProductThumbnail);
+
+productRouter.get('/:pid/thumbnail', authorization, getProductThumbnail);
+
+productRouter.get('/:pid/thumbnail/upload', authorization, showUploadDocumentsView);
+
+module.exports = productRouter;

@@ -1,24 +1,50 @@
 <div>
-    <div class="card-container">
+    <div class="d-flex flex-wrap justify-content-center">
         {{#each products}}
-            <div class="card card-products m-1">
-                <div class="card-body">
-                    <h5 class="card-title">{{this.title}}</h5>
-                    <p class="card-text">{{this.description}}</p>
-                    <p class="card-price">${{this.price}}</p>
-                    <form class="add-to-cart-form" action="/api/cart/648a52f9f0e5e735551ba791/addProductInCart/{{this._id}}" method="POST">
-                        <button class="btn btn-outline-secondary card-button" type="submit">Agregar al carrito</button>
+            <div class="card m-2" style="width: 18rem;">
+                <img src="{{thumbnail}}" class="card-img-top" alt="{{title}}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">${{price}}</p>
+                    <form class="add-to-cart-form" data-product-id="{{_id}}">
+                        <button class="btn btn-outline-secondary addToCartBtn" type="submit">Agregar al carrito</button>
                     </form>
                 </div>
             </div>
         {{/each}}
     </div>
-    <center>
+    <div class="text-center">
         {{#if hasPrevPage}}
-            <a href="/api/products?page={{prevPage}}"><button class="btn btn-outline-secondary m-3">Anterior</button></a>
+            <a href="/api/products?page={{prevPage}}"><button class="btn btn-light m-4">Anterior</button></a>
         {{/if}}
         {{#if hasNextPage}}
-            <a href="/api/products?page={{nextPage}}"><button class="btn btn-outline-secondary m-3">Siguiente</button></a>
+            <a href="/api/products?page={{nextPage}}"><button class="btn btn-light m-4">Siguiente</button></a>
         {{/if}}
-    </center>
+    </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const addToCartButtons = document.querySelectorAll(".add-to-cart-form");
+        addToCartButtons.forEach((button) => {
+            button.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const isLoggedInResponse = await fetch(`/api/cart/checkLogin`);
+                const isLoggedInData = await isLoggedInResponse.json();
+                if (isLoggedInData.loggedIn) {
+                    const productId = button.getAttribute("data-product-id");
+                    const addToCartResponse = await fetch(`/api/cart/:cid/addProductInCart/${productId}`, {
+                        method: "POST",
+                    });
+                    if (addToCartResponse.ok) {
+                        const addToCartData = await addToCartResponse.json();
+                        showSuccessMessage(addToCartData.mensaje);
+                    } else {
+                        showErrorMessage("Error al agregar el producto al carrito");
+                    }
+                } else {
+                    showErrorMessage("Se requiere iniciar sesión");
+                }
+            });
+        });
+    });
+</script>

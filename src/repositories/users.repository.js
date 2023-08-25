@@ -1,4 +1,4 @@
-const RepositoryGeneric = require("./RepositoryGeneric")
+const RepositoryGeneric = require("./RepositoryGeneric");
 
 class UserRepository extends RepositoryGeneric {
 
@@ -7,4 +7,4 @@ class UserRepository extends RepositoryGeneric {
     };
 };
 
-module.exports = UserRepository
+module.exports = UserRepository;

@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const UserController = require('../controllers/users.controller');
-const { authorization } = require('../passport/authorizationPassport');
-const { uploader } = require('../utils/uploader');
+const { Router } = require("express");
+const UserController = require("../controllers/users.controller");
+const { authorization } = require("../passport/authorizationPassport");
+const { uploader } = require("../utils/uploader");
 
 const userRouter = Router();
 
@@ -9,7 +9,7 @@ const { getUsers, getUser, createUser, updateUser, deleteUser, uploadUserDocumen
 
 userRouter.get('/', authorization, getUsers);
 
-userRouter.get('/:id', getUser);
+userRouter.get('/:uid', getUser);
 
 userRouter.post('/', createUser);
 
@@ -23,4 +23,4 @@ userRouter.get('/:uid/documents', authorization, getUserDocuments);
 
 userRouter.get('/:uid/documents/upload', authorization, showUploadDocumentsView);
 
-module.exports = userRouter
+module.exports = userRouter;

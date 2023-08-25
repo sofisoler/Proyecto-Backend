@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <h1 class="text-center">{{productTitle}}</h1>
+    <h2 class="text-center">Subir Imagen</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="/api/products/{{productId}}/thumbnail" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="type" value="thumbnail">
+                <div class="form-group">
+                    <label for="" class="mb-3">Seleccione la imagen:</label>
+                    <input type="file" class="form-control mb-3" name="thumbnail" id="thumbnail" multiple>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <button type="submit" class="btn btn-outline-secondary">Subir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

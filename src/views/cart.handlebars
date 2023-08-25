@@ -2,14 +2,26 @@
     {{#if cart.products.length}}
         <ul class="list-group">
             {{#each cart.products}}
-                <li class="list-group-item">
-                    <div class="row">
+                <li class="list-group-item m-2">
+                    <div class="row align-items-center">
                         <div class="col">
-                            <h5>{{this.product.title}}</h5>
-                            <p>${{this.product.price}}</p>
+                            <img src="{{product.thumbnail}}" alt="{{product.title}}" class="w-50 img-thumbnail">
+                        </div>
+                        <div class="col">
+                            <h5>{{product.title}}</h5>
+                            <p>${{multiply product.price quantity}}</p>
                         </div>
                         <div class="col-auto">
-                            <form action="/api/cart/{{../cart._id}}/deleteProductInCart/{{this.product._id}}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
+                            <form class="quantity-form" data-cart-id="{{../cart._id}}" data-product-id="{{product._id}}">
+                                <div class="input-group">
+                                    <button class="btn btn-light btn-sm minus-btn" type="button" data-action="decrease">-</button>
+                                    <input class="quantity-input" type="number" value="{{this.quantity}}" readonly>
+                                    <button class="btn btn-light btn-sm plus-btn" type="button" data-action="increase">+</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <form onsubmit="return confirmDeleteProduct('{{../cart._id}}', '{{product._id}}')">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <button class="btn btn-outline-danger" type="submit">Eliminar</button>
                             </form>
@@ -19,15 +31,99 @@
             {{/each}}
         </ul>
         <div class="text-center">
-            <form action="/api/cart/{{cart._id}}/deleteProductsInCart" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas vaciar el carrito?')">
-                <input type="hidden" name="_method" value="DELETE">
-                <button class="btn btn-outline-danger mt-4" type="submit">Vaciar carrito</button>
-            </form>
-            <form action="/api/cart/{{cart._id}}/confirmCheckout" method="POST">
-                <button class="btn btn-outline-secondary mt-4" type="submit">Finalizar Compra</button>
-            </form>
+            <p class="mt-3">Precio Total: ${{totalPrice}}</p>
+            <div class="btn-group m-4" role="group" aria-label="Botones de Acción">
+                <form onsubmit="return confirmDeleteProducts('{{cart._id}}')" class="btn-group" role="group">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-light mx-2" type="submit">Vaciar carrito</button>
+                </form>
+                <form action="/api/cart/{{cart._id}}/confirmCheckout" method="POST" class="btn-group" role="group">
+                    <button class="btn btn-light mx-2" type="submit">Finalizar pedido</button>
+                </form>
+            </div>
         </div>
     {{else}}
-        <p class="text-center">No hay productos en el carrito</p>
+        <div class="text-center m-2">
+            <h1 class="text-white">¡Tu carrito está vacío!</h1>
+            <div class="d-flex flex-column align-items-center">
+                <img src="/static/uploads/sadface.png" alt="Carrito Vacío">
+                <button class="btn btn-light mt-3">
+                    <a href="/api/products" class="text-decoration-none text-dark">Ver productos</a>
+                </button>
+            </div>
+        </div>
     {{/if}}
 </div>
+<script>
+    function confirmDeleteProduct(cartId, productId) {
+        confirmMessage('¿Estás seguro de que deseas eliminar este producto?')
+        .then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/cart/${cartId}/deleteProductInCart/${productId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.mensaje) {
+                        showSuccessMessage(data.mensaje)
+                    }
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
+        });
+        return false;
+    };
+</script>
+<script>
+    function confirmDeleteProducts(cartId) {
+        confirmMessage('¿Estás seguro de que deseas vaciar el carrito?')
+        .then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/cart/${cartId}/deleteProductsInCart`, {   
+                    method: 'DELETE',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            }
+        });
+        return false;
+    };
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityForms = document.querySelectorAll('.quantity-form');
+        quantityForms.forEach(form => {
+            form.addEventListener('click', function (event) {
+                event.preventDefault();
+                const cartId = this.getAttribute('data-cart-id');
+                const productId = this.getAttribute('data-product-id');
+                const action = event.target.getAttribute('data-action');
+                fetch(`/api/cart/${cartId}/updateProductQuantity/${productId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ action }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.mensaje) {
+                        showSuccessMessage(data.mensaje);
+                    }
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            });
+        });
+    });
+</script>

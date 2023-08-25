@@ -1,3 +1,4 @@
+const { UserDto } = require("../dto/user.dto");
 const { userService } = require("../service");
 const { CustomError } = require("../utils/errors/CustomError");
 const { EErrors } = require("../utils/errors/enums");
@@ -10,33 +11,36 @@ class UserController {
     getUsers = async (req, res) => {
         try {
             const login = req.session.user;
-            const { page=1, limit=3 } = req.query
+            const { page=1, limit=10 } = req.query;
             const { docs, 
                 hasPrevPage,
                 prevPage,
                 hasNextPage,
                 nextPage, 
-            } = await userService.getItems({page, limit})
+            } = await userService.getItems({ page, limit });
             if (!docs) {
-                return res.status(400).send('No hay usuarios')            
+                return res.status(400).send('No hay usuarios');     
             }
+            const userDtos = docs.map(user => new UserDto(user));
             res.status(200).render('user',{
+                title: 'Usuarios',
                 user: login,
-                users: docs,
+                users: userDtos,
                 hasPrevPage,
                 prevPage,
                 hasNextPage,
                 nextPage
-            })
+            });
         } catch (error) {
             logger.error(error);
         }
     };
 
-    getUser = (req, res) => {
+    getUser = async (req, res) => {
         try {
-            const {id} = req.params
-            res.status(200).send(id)
+            const { uid } = req.params;
+            let UserById = await userService.getItemById(uid);
+            res.send(UserById);
         } catch (error) {
             logger.error(error);
         }
@@ -44,16 +48,16 @@ class UserController {
 
     createUser = async (req, res, next) => {
         try {
-            let { first_name, last_name, email } = req.body
+            let { first_name, last_name, email } = req.body;
             if (!first_name || !last_name || !email) {
                 CustomError.createError({
-                    name: "User creation error",
+                    name: 'Error de creación de usuario',
                     cause: generateUserErrorInfo({ first_name, last_name, email }),
-                    message: "Error trying to create user",
+                    message: 'Error al intentar crear usuario',
                     code: EErrors.INVALID_TYPES_ERROR
                 });
             }
-            let addedUser = await userService.createItem({first_name, last_name, email})
+            let addedUser = await userService.createItem({ first_name, last_name, email })
             res.status(201).send({
                 users,
                 addedUser,
@@ -66,16 +70,16 @@ class UserController {
 
     updateUser =  async (req, res) => {
         try {
-            const { uid } = req.params
-            let userToReplace = req.body
+            const { uid } = req.params;
+            let userToReplace = req.body;
             if (!userToReplace.first_name || !userToReplace.last_name || !userToReplace.email) {
-                return res.status(400).send({ message: 'Completar todos los campos'})
+                return res.status(400).send({ message: 'Completar todos los campos' });
             }
-            let result = await userService.updateItem(uid, userToReplace)
+            let result = await userService.updateItem(uid, userToReplace);
             res.status(201).send({ 
                 users: result,
                 message: 'Usuario modificado' 
-            })
+            });
         } catch (error) {
             logger.error(error);
         }
@@ -83,9 +87,9 @@ class UserController {
 
     deleteUser = async (req, res) => {
         try {
-            const { uid } = req.params
-            let result = await userService.deleteItem(uid)
-            res.status(200).send({ message:"Usuario borrado", result })
+            const { uid } = req.params;
+            let result = await userService.deleteItem(uid);
+            res.status(200).send({ message: 'Usuario eliminado', result });
         } catch (error) {
             logger.error(error);
         }
@@ -116,7 +120,7 @@ class UserController {
                 user.documents = documents;
                 user.last_connection = new Date();
                 await user.save();
-                res.status(200).send({ message: 'Documentos subidos exitosamente', user });
+                res.status(200).send({ message: 'Documento subido exitosamente', user });
             });
         } catch (error) {
             logger.error(error);
@@ -138,10 +142,21 @@ class UserController {
         }
     };
 
-    showUploadDocumentsView = (req, res) => {
+    showUploadDocumentsView = async (req, res) => {
         const { uid } = req.params;
-        res.render('upload', { userId: uid });
+        try {
+            const user = await userService.getItemById(uid);
+            if (!user) {
+                return res.status(404).send('Usuario no encontrado');
+            }
+            const userDto = new UserDto(user);
+            res.render('upload', {
+                user: userDto
+            });
+        } catch (error) {
+            logger.error(error);
+        }
     };
 };
 
-module.exports = UserController
+module.exports = UserController;

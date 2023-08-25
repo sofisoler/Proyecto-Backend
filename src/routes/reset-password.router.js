@@ -1,12 +1,14 @@
-const { Router } = require('express');
-const ResetPasswordController = require('../controllers/reset-password.controller');
+const { Router } = require("express");
+const ResetPasswordController = require("../controllers/reset-password.controller");
 
 const resetPasswordRouter = Router();
 
-const { renderResetPassword, emailResetPassword } = new ResetPasswordController();
+const { renderResetPassword, emailResetPassword, resetPassword } = new ResetPasswordController();
 
 resetPasswordRouter.get('/', renderResetPassword);
 
 resetPasswordRouter.get('/email', emailResetPassword);
 
-module.exports = resetPasswordRouter
+resetPasswordRouter.post('/reset', resetPassword);
+
+module.exports = resetPasswordRouter;

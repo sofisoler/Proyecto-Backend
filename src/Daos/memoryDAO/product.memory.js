@@ -1,19 +1,41 @@
-const fs = require('fs');
-const { logger } = require('../../utils/logger');
+const fs = require("fs");
+const { logger } = require("../../utils/logger");
 
 class ProductManager {
 
     constructor() {
-        this.path = "./src/dbJson/product.json"
-        this.products = []
+        this.path = "./src/dbJson/product.json";
+        this.products = [];
     };
 
-    static id = 0
+    static id = 0;
 
+    // Lee los productos desde el archivo
+    readProducts = async () => {
+        let response = await fs.promises.readFile(this.path, "utf-8");
+        return JSON.parse(response);
+    };
+
+    // Obtiene todos los productos
+    getProducts = async () => {
+        let productsList = await this.readProducts();
+        return productsList;
+    };
+
+    // Obtiene un producto por su ID
+    getProductById = async (productId) => {
+        let productsList = await this.readProducts();
+        const product = productsList.find(product => product.id === productId);
+        if (!product) {
+            logger.info('Producto no encontrado');
+        } else {
+            logger.info(product);
+        }
+    };
+
+    // Agrega un nuevo producto y lo guarda en el archivo
     addProduct = async (title, description, thumbnail, price, code, stock) => {
-
-        ProductManager.id++
-
+        ProductManager.id++;
         let newProduct = {
             title,
             description,
@@ -23,43 +45,29 @@ class ProductManager {
             stock,
             id: ProductManager.id
         };
-
-        this.products.push(newProduct)
-
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products))
+        this.products.push(newProduct);
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
     };
 
-    readProducts = async () => {
-        let respuesta = await fs.promises.readFile(this.path, "utf-8")
-        return JSON.parse(respuesta)
-    };
-
-    getProducts = async () => {
-        let respuesta2 = await this.readProducts()
-        return logger.info(respuesta2)
-    };
-
-    getProductsById = async (id) => {
-        let respuesta3 = await this.readProducts()
-        if (!respuesta3.find(product => product.id === id)){
-            logger.info("Product not found")
+    // Actualiza un producto existente
+    updateProduct = async (id, updatedProduct) => {
+        let productsList = await this.readProducts();
+        const productIndex = productsList.findIndex(product => product.id === id);
+        if (productIndex !== -1) {
+            productsList[productIndex] = { ...updatedProduct, id };
+            await fs.promises.writeFile(this.path, JSON.stringify(productsList));
+            logger.info("Producto actualizado exitosamente");
         } else {
-            logger.info(respuesta3.find(product => product.id === id))
+            logger.info("Producto no encontrado");
         }
     };
 
-    deleteProduct = async (id) => {
-        let respuesta3 = await this.readProducts()
-        let productFilter = respuesta3.filter(products => products.id != id)
-        await fs.promises.writeFile(this.path, JSON.stringify(productFilter))
-        logger.info("Product deleted successfully")
-    };
-
-    updateProducts = async ({id, ...product}) => {
-        await this.deleteProduct(id);
-        let productOld = await this.readProducts()
-        let productsModified = [{...product, id}, ...productOld]
-        await fs.promises.writeFile(this.path, JSON.stringify(productsModified))
+    // Elimina un producto por su ID
+    deleteProduct = async (productId) => {
+        let productsList = await this.readProducts();
+        let updatedProducts = productsList.filter(product => product.id !== productId);
+        await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts));
+        logger.info("Producto eliminado exitosamente");
     };
 };
 

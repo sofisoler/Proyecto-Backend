@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "mocha test/supertest.test.js",
+    "test": "mocha test/User.test.js",
     "server": "nodemon src/server.js --mode production",
     "dev": "nodemon src/server.js --mode development"
   },
@@ -29,7 +29,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-compression": "^1.0.2",
-    "express-handlebars": "^7.0.4",
+    "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.4",
@@ -43,7 +43,7 @@
     "socket.io": "^4.6.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "twilio": "^4.11.2",
+    "sweetalert2": "^11.7.23",
     "winston": "^3.9.0"
   },
   "devDependencies": {

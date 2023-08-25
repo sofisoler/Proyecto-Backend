@@ -1,13 +1,14 @@
 const { userModel } = require("../Daos/mongo/models/users.model");
-const { createHash } = require("../utils/bcryptPass");
+const { createHash, checkValidPassword } = require("../utils/bcryptPass");
 const { generateToken } = require("../utils/jsonwebtoken");
 const { logger } = require("../utils/logger");
 
 class SessionController {
 
-    renderLoginPage = (req,res) => {
+    renderLoginPage = (req, res) => {
         try {
-            res.render('login', {});
+            const mensaje = req.query.mensaje;
+            res.render('login', { mensaje });
         } catch (error) {
             logger.error(error);
         }
@@ -16,16 +17,26 @@ class SessionController {
     loginSession = async (req, res) => {
         try {
             const { username, password } = req.body;
-            const user = await userModel.findOne({ username, password });
-            if (!user) return res.status(400).send({ status: 'error', message: 'Revisar usuario y contraseña' });
+            const user = await userModel.findOne({ username });
+            if (!user) {
+                const mensajeError = 'Revisar usuario y contraseña';
+                return res.render('login', { mensajeError });
+            }
+            const isPasswordValid = checkValidPassword({ password, hashedPassword: user.password });
+            if (!isPasswordValid) {
+                const mensajeError = 'Revisar usuario y contraseña';
+                return res.render('login', { mensajeError });
+            }
             const accessToken = generateToken(user);
             req.session.user = user;
-            res.redirect('/api/products');
+            const mensaje = `¡Bienvenid@ ${user.first_name}!`;
+            const queryString = `?mensaje=${encodeURIComponent(mensaje)}`;
+            res.redirect(`/api/products${queryString}`);
         } catch (error) {
             logger.error(error);
         }
     };
-
+    
     getSession = (req, res) => {
         try {
             res.send({
@@ -39,7 +50,7 @@ class SessionController {
 
     renderRegisterPage = (req, res) => {
         try {
-            res.render('register');
+            res.render('register', { title: 'Registrarse' });
         } catch (error) {
             logger.error(error);
         }
@@ -50,22 +61,22 @@ class SessionController {
             const { first_name, last_name, email, username, password } = req.body;
             const userExist = await userModel.findOne({ email });
             if (userExist) {
-                return res.status(400).send({ status: 'error', message: 'Usuario existente' });
+                const mensajeError = 'Usuario existente';
+                return res.render('register', { mensajeError });
             }
+            const hashedPassword = createHash(password);
             const newUser = new userModel({
                 first_name,
                 last_name,
                 email,
                 username,
-                password
+                password: hashedPassword
             });
             await newUser.save();
             const accessToken = generateToken(newUser);
-            res.send({
-                status: 'success',
-                message: 'Usuario creado',
-                accessToken
-            });
+            const mensaje = `¡Usuario creado exitosamente!`;
+            const queryString = `?mensaje=${encodeURIComponent(mensaje)}`;
+            res.redirect(`/session${queryString}`);
         } catch (error) {
             logger.error(error);
         }
@@ -101,11 +112,11 @@ class SessionController {
         }
     };
 
-    logoutSession = (req,res) => {
+    logoutSession = (req, res) => {
         try {
             req.session.destroy(error => {
                 if(error) return res.send({status: 'Error al cerrar sesión', message: error})
-                res.render('login');
+                res.render('login', { title: 'Iniciar sesión' });
             });
         } catch (error) {
             logger.error(error);
@@ -113,4 +124,4 @@ class SessionController {
     };
 };
 
-module.exports = SessionController
+module.exports = SessionController;

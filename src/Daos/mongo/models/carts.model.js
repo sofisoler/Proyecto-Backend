@@ -1,14 +1,21 @@
-const { Schema, model } = require("mongoose")
+const { Schema, model } = require("mongoose");
 
-const collection = 'carts'
+const collection = 'carts';
 
-const CartSchema = new Schema({  
+const CartSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    },
     products: [{
         product: {
             type: Schema.Types.ObjectId,
             ref: 'products'
         },
-        quantity: Number
+        quantity: {
+            type: Number,
+            default: 1
+        }
     }]
 });
 
@@ -17,7 +24,7 @@ CartSchema.pre('findOne', function(next) {
     next();
 });
 
-const cartsModel = model(collection,CartSchema)
+const cartsModel = model(collection, CartSchema);
 
 module.exports = {
     cartsModel

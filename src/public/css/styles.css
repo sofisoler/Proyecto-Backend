@@ -2,28 +2,14 @@ body {
     background-color: #d8b5ff;
 }
 
-h1 {
-    text-align: center;
+.card-title {
+    height: 3rem;
 }
 
-.card-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.card-products {
-    width: 16rem;
-    height: 16rem;
-}
-
-.card-button {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: 10px;
-    text-align: center;
+.quantity-input {
+    pointer-events: none;
+    border: 1px solid #d8b5ff80;
+    padding: 5px;
+    border-radius: 4px;
+    background-color: #f5f5f5;
 }

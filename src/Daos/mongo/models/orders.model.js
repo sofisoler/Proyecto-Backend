@@ -1,8 +1,8 @@
-const {Schema, model} = require('mongoose')
+const { Schema, model } = require("mongoose");
 
-const orderCollection = 'orders'
+const collection = 'orders';
 
-const orderSchema = new Schema({
+const OrderSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
@@ -11,13 +11,17 @@ const orderSchema = new Schema({
         product: {
             type: Schema.Types.ObjectId,
             ref: 'products'
+        },
+        quantity: {
+            type: Number,
+            default: 1
         }
     }],
     total: Number,
     created: Date
 });
 
-const ordersModel = model(orderCollection, orderSchema);
+const ordersModel = model(collection, OrderSchema);
 
 module.exports = {
     ordersModel

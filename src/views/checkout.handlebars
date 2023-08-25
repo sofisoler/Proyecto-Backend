@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="row justify-content-center m-2">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">Resumen del pedido</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each cart.products}}
+                                <tr>
+                                    <td>{{product.title}}</td>
+                                    <td>{{quantity}}</td>
+                                    <td>${{product.price}}</td>
+                                    <td>${{multiply product.price quantity}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    <p class="text-center">Total: ${{totalPrice}}</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="/api/cart"><button class="btn btn-light m-4">Volver a carrito</button></a>
+                <button class="btn btn-light m-4" id="generateOrderBtn">Generar orden</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const generateOrderBtn = document.getElementById("generateOrderBtn");
+        const cartId = "{{cart._id}}";
+        if (generateOrderBtn) {
+            generateOrderBtn.addEventListener("click", async () => {
+                try {
+                    const orderData = {
+                        user: "{{user._id}}",
+                        total: {{totalPrice}},
+                        created: new Date().toISOString(),
+                    }
+                    const response = await fetch("/api/orders", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(orderData),
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.status === "success") {
+                            showSuccessMessage("Orden generada con éxito");
+                            // Elimina los productos del carrito después de generar la orden
+                            const deleteCartResponse = await fetch(`/api/cart/${cartId}/deleteProductsInCart`, {
+                                method: "DELETE",
+                            });
+                            if (deleteCartResponse.ok) {
+                                const deleteCartData = await deleteCartResponse.json();
+                                if (deleteCartData.mensaje) {
+                                    showSuccessMessage(deleteCartData.mensaje);
+                                }
+                            }
+                            // Después de completar la orden, redirige al usuario a su página de pedidos
+                            window.location.href = "/api/orders/{{user._id}}";
+                        } else {
+                            showErrorMessage("Error al generar la orden");
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+</script>

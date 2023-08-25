@@ -1,10 +1,12 @@
 <div class="container mt-5">
-    <h1 class="text-center">Subir Documentos</h1>
+    <h1 class="text-center">{{user.full_name}}</h1>
+    <h2 class="text-center">Subir Documento</h2>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form action="/api/users/{{userId}}/documents" method="POST" enctype="multipart/form-data">
+            <form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="type" value="documents">
                 <div class="form-group">
-                    <label for="documents" class="mb-3">Seleccione los documentos:</label>
+                    <label for="documents" class="mb-3">Seleccione el documento:</label>
                     <input type="file" class="form-control mb-3" name="documents" id="documents" multiple>
                 </div>
                 <div style="margin-bottom: 20px;">

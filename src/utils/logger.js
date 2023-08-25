@@ -23,7 +23,7 @@ const logger = winston.createLogger({
         new winston.transports.Console({
             level: 'info',
             format: winston.format.combine(
-                winston.format.colorize({colors: customLevelsOptions.colors}),
+                winston.format.colorize({ colors: customLevelsOptions.colors }),
                 winston.format.simple()
             )
         }),
@@ -36,9 +36,9 @@ const logger = winston.createLogger({
 });
 
 exports.addLogger = (req, res, next) => {
-    req.logger = logger
-    req.logger.info(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
-    next()
+    req.logger = logger;
+    req.logger.info(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`);
+    next();
 };
 
-exports.logger = logger
+exports.logger = logger;
