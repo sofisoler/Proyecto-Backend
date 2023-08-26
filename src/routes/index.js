@@ -8,7 +8,6 @@ const chatRouter = require('./chat.router');
 const cookieRouter = require('./cookie.router');
 const compression = require('express-compression');
 const errorHandler = require('../middleware/errors');
-const mockingController = require('../controllers/mocking.controller');
 const resetPasswordRouter = require('./reset-password.router');
 
 const router = Router();
@@ -30,7 +29,5 @@ router.use(compression({
 }));
 
 router.use(errorHandler);
-
-router.get('/mockingproducts', mockingController.getMockingProducts);
 
 module.exports = router;
