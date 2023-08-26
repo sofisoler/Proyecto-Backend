@@ -29,9 +29,7 @@ class SessionController {
             }
             const accessToken = generateToken(user);
             req.session.user = user;
-            const mensaje = `¡Bienvenid@ ${user.first_name}!`;
-            const queryString = `?mensaje=${encodeURIComponent(mensaje)}`;
-            res.redirect(`/api/products${queryString}`);
+            res.redirect('/');
         } catch (error) {
             logger.error(error);
         }
@@ -85,7 +83,7 @@ class SessionController {
     authenticateGithubCallback = (req, res) => {
         try {
             req.session.user = req.user;
-            res.redirect('/api/products');
+            res.redirect('/');
         } catch (error) {
             logger.error(error);
         }

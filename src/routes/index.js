@@ -1,32 +1,26 @@
 const { Router } = require('express');
 const sessionRouter = require('./session.router');
+const homeRouter = require('./home.router');
 const userRouter = require('./user.router');
 const orderRouter = require('./order.router');
 const productRouter = require('./product.router');
 const cartRouter = require('./cart.router');
 const chatRouter = require('./chat.router');
 const cookieRouter = require('./cookie.router');
-const compression = require('express-compression');
-const errorHandler = require('../middleware/errors');
 const resetPasswordRouter = require('./reset-password.router');
+const errorHandler = require('../middleware/errors');
 
 const router = Router();
 
 router.use('/session', sessionRouter);
+router.use('/', homeRouter);
 router.use('/api/users', userRouter);
 router.use('/api/orders', orderRouter);
-router.use('/chat', chatRouter);
 router.use('/api/products', productRouter);
 router.use('/api/cart', cartRouter);
+router.use('/chat', chatRouter);
 router.use('/cookie', cookieRouter);
 router.use('/reset-password', resetPasswordRouter);
-
-router.use(compression({
-    brotli: {
-        enabled: true,
-        zlib: {}
-    }
-}));
 
 router.use(errorHandler);
 
