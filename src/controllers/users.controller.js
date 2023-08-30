@@ -157,6 +157,20 @@ class UserController {
             logger.error(error);
         }
     };
+
+    makeUserPremium = async (req, res) => {
+        try {
+            const { uid } = req.params;
+            const updatedUser = await userService.updateItem(uid, { isPremium: true });
+            if (!updatedUser) {
+                return res.status(404).send({ message: 'Usuario no encontrado' });
+            }
+            res.status(200).send({ message: 'Usuario convertido en premium', user: updatedUser });
+        } catch (error) {
+            logger.error(error);
+            res.status(500).send({ message: 'Error al hacer que el usuario sea premium' });
+        }
+    };
 };
 
 module.exports = UserController;

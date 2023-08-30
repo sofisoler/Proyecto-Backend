@@ -10,10 +10,10 @@ const transport = createTransport({
     }
 });
 
-sendMailResetPassword = async () => {
+sendMailResetPassword = async (toEmail) => {
     await transport.sendMail ({
         from: `Ecommerce <${process.env.GMAIL_MAIL_USER}>`,
-        to: 'sofisoler01@gmail.com',
+        to: toEmail,
         subject: 'Restablecer contraseña',
         html: `
             <div>

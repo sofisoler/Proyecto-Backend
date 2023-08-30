@@ -4,11 +4,7 @@
 
 🔗 https://proyecto-backend-68h5-dev.fl0.io/
 
-## Servidor local:
-
-🔗 http://localhost:8080/
-
-### Instalación:
+### Instalación local:
 
 1. Clona el repositorio:
 

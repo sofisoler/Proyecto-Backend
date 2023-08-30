@@ -30,6 +30,10 @@ const UserSchema = new Schema({
         }
     ],
     password: String,
+    isPremium: {
+        type: Boolean,
+        default: false,
+      },
     last_connection: Date
 });
 

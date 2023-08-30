@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+        <div class="col-md-4 w-50">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h1>Crear producto</h1>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/api/products" id="createProductForm">
+                        <div class="form-group">
+                            <label>Nombre:</label>
+                            <input name="title" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descripcion:</label>
+                            <input name="description" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen:</label>
+                            <input name="thumbnail" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio:</label>
+                            <input name="price" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Código:</label>
+                            <input name="code" type="number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock:</label>
+                            <input name="stock" type="number" class="form-control" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-outline-secondary mt-4">Crear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/js/products.js"></script>

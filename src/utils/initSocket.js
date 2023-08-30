@@ -22,6 +22,13 @@ const initSocket = (io) => {
                 socket.broadcast.emit('userDisconnected', socket.username);
             }
         });
+
+        socket.on('updateProductList', () => {
+        });
+
+        socket.on('newProductCreated', () => {
+            io.emit('updateProductList');
+        });
     });
 };
 

@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const ProductController = require("../controllers/products.controller");
-const { authorization } = require("../passport/authorizationPassport");
+const { authorization, checkPremiumUser, ensureAuthenticated } = require("../passport/authorizationPassport");
 
 const productRouter = Router();
 
@@ -10,11 +10,11 @@ productRouter.get('/', getProducts);
 
 productRouter.get('/:pid', getProduct);
 
-productRouter.post('/', createProduct);
+productRouter.post('/', authorization, createProduct);
 
-productRouter.put('/:pid', updateProduct);
+productRouter.put('/:pid', ensureAuthenticated, checkPremiumUser, updateProduct);
 
-productRouter.delete('/:pid', deleteProduct);
+productRouter.delete('/:pid', ensureAuthenticated, checkPremiumUser, deleteProduct);
 
 productRouter.post('/:pid/thumbnail', authorization, uploadProductThumbnail);
 

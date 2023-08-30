@@ -5,7 +5,7 @@ const { uploader } = require("../utils/uploader");
 
 const userRouter = Router();
 
-const { getUsers, getUser, createUser, updateUser, deleteUser, uploadUserDocuments, getUserDocuments, showUploadDocumentsView } = new UserController();
+const { getUsers, getUser, createUser, updateUser, deleteUser, uploadUserDocuments, getUserDocuments, showUploadDocumentsView, makeUserPremium } = new UserController();
 
 userRouter.get('/', authorization, getUsers);
 
@@ -22,5 +22,7 @@ userRouter.post('/:uid/documents', authorization, uploader.array('documents'), u
 userRouter.get('/:uid/documents', authorization, getUserDocuments);
 
 userRouter.get('/:uid/documents/upload', authorization, showUploadDocumentsView);
+
+userRouter.post('/:uid/premium', authorization, makeUserPremium);
 
 module.exports = userRouter;

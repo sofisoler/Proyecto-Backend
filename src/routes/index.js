@@ -9,6 +9,7 @@ const chatRouter = require('./chat.router');
 const cookieRouter = require('./cookie.router');
 const resetPasswordRouter = require('./reset-password.router');
 const errorHandler = require('../middleware/errors');
+const realTimeProductsRouter = require('./realTimeProducts.router');
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use('/api/cart', cartRouter);
 router.use('/chat', chatRouter);
 router.use('/cookie', cookieRouter);
 router.use('/reset-password', resetPasswordRouter);
+router.use('/realTimeProducts', realTimeProductsRouter);
 
 router.use(errorHandler);
 

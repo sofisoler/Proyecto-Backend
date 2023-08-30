@@ -13,9 +13,18 @@ class ResetPasswordController {
         }
     };
 
+    enterEmail = (req, res) => {
+        try {
+            res.render('reset-password-email');
+        } catch (error) {
+            logger.error(error);
+        }
+    };
+
     emailResetPassword = async (req, res) => {
         try {
-            sendMailResetPassword();
+            const { toEmail } = req.body;
+            sendMailResetPassword(toEmail);
             res.send('Se ha enviado un correo de restablecimiento de contraseña. Por favor, revisa tu bandeja de entrada y sigue las instrucciones proporcionadas.');
         } catch (error) {
             logger.error(error);
