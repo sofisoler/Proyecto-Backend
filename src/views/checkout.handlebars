@@ -4,32 +4,34 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="text-center">Resumen del pedido</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th>Precio</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each cart.products}}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{product.title}}</td>
-                                    <td>{{quantity}}</td>
-                                    <td>${{product.price}}</td>
-                                    <td>${{multiply product.price quantity}}</td>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
                                 </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {{#each cart.products}}
+                                    <tr>
+                                        <td>{{product.title}}</td>
+                                        <td>{{quantity}}</td>
+                                        <td>${{product.price}}</td>
+                                        <td>${{multiply product.price quantity}}</td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
                     <p class="text-center">Total: ${{totalPrice}}</p>
                 </div>
             </div>
             <div class="text-center">
-                <a href="/api/cart"><button class="btn btn-light m-4">Volver a carrito</button></a>
-                <button class="btn btn-light m-4" id="generateOrderBtn">Generar orden</button>
+                <a href="/api/cart" class="btn btn-light m-2">Volver a carrito</a>
+                <button class="btn btn-light m-2" id="generateOrderBtn">Generar orden</button>
             </div>
         </div>
     </div>

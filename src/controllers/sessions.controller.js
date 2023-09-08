@@ -8,7 +8,8 @@ class SessionController {
     renderLoginPage = (req, res) => {
         try {
             const mensaje = req.query.mensaje;
-            res.render('login', { mensaje });
+            const title = "Iniciar sesión";
+            res.render('login', { mensaje, title });
         } catch (error) {
             logger.error(error);
         }
