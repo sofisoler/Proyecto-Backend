@@ -7,7 +7,7 @@ class ResetPasswordController {
 
     renderResetPassword = (req, res) => {
         try {
-            res.render('reset-password');
+            res.render('reset-password', { title: 'Restablecer contraseña' });
         } catch (error) {
             logger.error(error);
         }
@@ -15,7 +15,7 @@ class ResetPasswordController {
 
     enterEmail = (req, res) => {
         try {
-            res.render('reset-password-email');
+            res.render('reset-password-email', { title: 'Restablecer contraseña' });
         } catch (error) {
             logger.error(error);
         }
@@ -41,7 +41,7 @@ class ResetPasswordController {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             user.password = hashedPassword;
             await user.save();
-            res.send('Contraseña restablecida exitosamente');
+            res.render('reset-password-success', { title: 'Contraseña restablecida', mensaje: 'Contraseña restablecida exitosamente' });
         } catch (error) {
             logger.error(error);
             res.status(500).send('Error interno del servidor');

@@ -19,7 +19,12 @@ sendMailResetPassword = async (toEmail) => {
             <div>
                 <h1>Restablecer contraseña</h1>
                 <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace para continuar:</p>
-                <a href="http://localhost:8080/reset-password">Restablecer contraseña</a>
+                <div>
+                    <a href="https://proyecto-backend-68h5-dev.fl0.io/reset-password">Restablecer contraseña en línea</a>
+                </div>
+                <div>
+                    <a href="http://localhost:8080/reset-password">Restablecer contraseña en local</a>
+                </div>
                 <p>Si no has solicitado restablecer tu contraseña, ignora este mensaje.</p>
             </div>
         `,
